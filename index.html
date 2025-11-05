@@ -56,7 +56,7 @@
         transform: rotate(1deg);
     }
 
-    /* --- 3. 버튼 디자인 --- */
+    /* --- 3. 버튼 디자인 (애니메이션 제거됨) --- */
     button {
         font-family: 'Jua', sans-serif;
         font-weight: bold;
@@ -68,21 +68,40 @@
         color: var(--color-border);
         cursor: pointer;
         box-shadow: 4px 4px 0px 0px var(--color-border);
-        transform: rotate(2deg);
+        transform: rotate(2deg); /* 기본 기울임 효과만 유지 */
         background-color: #fff;
+        transition: all 0.1s; /* 부드러운 전환 효과만 유지 */
     }
-    
-    /* 포털 버튼 (급식 메뉴 버튼) */
+
+    /* 마우스를 올렸을 때 (hover): 단순 그림자 변화와 확대만 적용 */
+    button:hover {
+        transform: scale(1.02) rotate(2deg);
+        box-shadow: 6px 6px 0px 0px var(--color-border);
+    }
+
+    /* 버튼을 클릭했을 때 (active): 눌리는 효과만 적용 */
+    button:active {
+        transform: scale(0.97) rotate(1deg); 
+        box-shadow: 2px 2px 0px 0px var(--color-border); 
+    }
+
+    /* 개별 버튼 스타일 */
     #lunch-menu { 
         background-color: var(--color-rose); 
         transform: rotate(-4deg);
-        width: 100%; /* 버튼이 전체 너비를 차지하도록 설정 */
+        width: 100%; 
+    }
+    #yes_btn { 
+        background-color: var(--color-rose); 
+        transform: rotate(-4deg); 
+    }
+    #no_btn { 
+        background-color: var(--color-grass); 
+    }
+    #logout_btn, #back_btn { 
+        background-color: var(--color-sky); 
     }
 
-    #yes_btn { background-color: var(--color-rose); transform: rotate(-4deg); }
-    #no_btn { background-color: var(--color-grass); }
-    #logout_btn, #back_btn { background-color: var(--color-sky); }
-    
     /* --- 4. 메시지 및 표 영역 --- */
     .hidden { display: none; }
     .message {
@@ -123,6 +142,14 @@
         color: var(--color-border);
         font-size: 1.1rem;
     }
+
+    /* --- 6. 제작자 정보 스타일 --- */
+    #creator-info {
+        font-size: 0.9rem;
+        margin-top: 20px;
+        color: var(--color-text-dark);
+        opacity: 0.7;
+    }
 </style>
 </head>
 <body>
@@ -136,7 +163,7 @@
     <p id="today-date-display" class="date-text"></p> 
     <p>오늘의 급식 메뉴를 확인합니다. 🍚</p>
     <button id="lunch-menu">급식 메뉴 🍚</button>
-    </div>
+</div>
 
 <div id="message_area" class="card hidden">
     <p id="message_text" class="message hidden"></p> 
@@ -149,10 +176,14 @@
 
     <button id="back_btn">이전 화면으로 돌아가기</button>
 </div>
+
+<p id="creator-info">Made by 김대원</p>
+
 <script>
 // --- JavaScript 시작 ---
 
 const NEIS_CONFIG = {
+    // 🚨 주: API KEY와 학교 정보가 유효한지 꼭 다시 확인하세요!
     KEY: "59ff63a46d7f41bf97464e3caf3a486c", 
     ATPT_OFCDC_SC_CODE: "B10", 
     SD_SCHUL_CODE: "7130255", 
@@ -180,7 +211,6 @@ async function fetchMealDataFromAPI() {
         if (data.mealServiceDietInfo) {
             let menuString = data.mealServiceDietInfo[1].row[0].DDISH_NM;
             
-            // 메뉴 문자열을 <br/> 기준으로 분리하고, 괄호 안의 알레르기 정보는 제거
             let menuArray = menuString
                 .split('<br/>')
                 .map(item => item.replace(/\([0-9\.]+\)/g, '').trim())
@@ -190,7 +220,8 @@ async function fetchMealDataFromAPI() {
         } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
             return { error: `[공지] 오늘 급식 정보는 찾을 수 없습니다. (주말 또는 방학) 😥` };
         } else if (data.RESULT && data.RESULT.MESSAGE) {
-            return { error: `[NEIS 에러] ${data.RESULT.MESSAGE}` };
+            // 이스케이프 되지 않은 문자열 템플릿 오류 수정
+            return { error: `[NEIS 에러] ${data.RESULT.MESSAGE}` }; 
         }
         else {
             return { error: `[에러] 알 수 없는 API 응답 형식입니다.` };
@@ -204,13 +235,11 @@ async function fetchMealDataFromAPI() {
 // --- 표(Table)를 생성하여 표시하는 함수 ---
 function displayMenuAsTable(menuArray) {
     const tableBody = document.querySelector('#menu_table');
-    tableBody.innerHTML = ''; // 기존 내용 초기화
+    tableBody.innerHTML = ''; 
 
-    // 헤더 추가
     const headerRow = tableBody.insertRow();
     headerRow.innerHTML = '<th>No.</th><th>메뉴</th>';
 
-    // 메뉴 항목 추가
     menuArray.forEach((item, index) => {
         const row = tableBody.insertRow();
         const cellNo = row.insertCell();
@@ -264,11 +293,9 @@ const StateManager = {
         if (stateClass) UI.elements.body.classList.add(stateClass);
     },
     
-    // 급식 메뉴 클릭 시 로직
     showMealMenu: async function(prevId, stateClass) {
         this.showScreen("message_area", stateClass);
         
-        // 표 영역 숨기고, 로딩 텍스트 표시
         UI.elements.menu_table_area.classList.add("hidden");
         UI.elements.message_text.classList.remove("hidden"); 
         UI.elements.message_text.textContent = "정보를 불러오는 중입니다... ⏳";
@@ -276,28 +303,23 @@ const StateManager = {
         const result = await fetchMealDataFromAPI();
         
         if (result.success) {
-            // 성공 시: 로딩 텍스트 숨기고, 표 표시
             displayMenuAsTable(result.menu);
             UI.elements.message_text.classList.add("hidden");
             UI.elements.menu_table_area.classList.remove("hidden");
         } else {
-            // 실패 시: 오류 메시지 표시, 표 영역 숨김 유지
             UI.elements.message_text.textContent = result.error;
             UI.elements.menu_table_area.classList.add("hidden");
         }
 
-        // 돌아가기 버튼 설정
         UI.elements.back_btn.onclick = () => this.showScreen(prevId, 'access-state');
     },
     
-    // '아닙니다' 버튼 클릭 시 로직
     showDenyMessage: function() {
         this.showScreen("message_area", "deny-state");
         UI.elements.menu_table_area.classList.add("hidden");
         UI.elements.message_text.classList.remove("hidden");
         UI.elements.message_text.textContent = "아직 해누리 친구가 아니군요! 다음에 꼭 만나요! 👋";
         
-        // 돌아가기 버튼 설정 (질문 화면으로 복귀)
         UI.elements.back_btn.onclick = () => this.showScreen("question", "deny-state");
     },
     
@@ -315,8 +337,7 @@ const StateManager = {
             this.showMealMenu("portal", "access-state");
         });
         
-        // 3. 돌아가기 버튼 (초기 상태에서는 질문 화면으로 돌아가도록 설정)
-        // 실제 동작은 showMealMenu 또는 showDenyMessage에서 상황에 맞게 재설정됩니다.
+        // 3. 돌아가기 버튼 
         UI.elements.back_btn.onclick = () => this.showScreen("question", "deny-state");
     }
 };
