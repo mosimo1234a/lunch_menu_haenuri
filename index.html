@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>해누리 초등학교 우리들의 공간 🎀 (잔반 없는 날 추가)</title>
+<title>해누리 초등학교 5학년 우리들의 공간 🏫</title>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
     /* --- 1. CSS 변수 및 기본 설정 --- */
@@ -88,19 +88,29 @@
         transform: rotate(-4deg);
         width: 100%; 
     }
-    #yes_btn { 
-        background-color: var(--color-rose); 
-        transform: rotate(-4deg); 
-    }
-    #no_btn { 
+    #schedule-btn { 
         background-color: var(--color-grass); 
+        transform: rotate(3deg);
+        width: 100%; 
     }
-    #logout_btn, #back_btn { 
-        background-color: var(--color-sky); 
+    #timetable-btn { 
+        background-color: var(--color-sky);
+        width: 100%;
+        transform: rotate(-1deg);
+    }
+    #yes_btn { background-color: var(--color-rose); transform: rotate(-4deg); }
+    #no_btn { background-color: var(--color-grass); }
+    #back_btn { background-color: var(--color-sky); }
+    #settings-btn { 
+        background-color: var(--color-apricot); 
+        font-size:0.9rem; 
+        padding: 10px 20px; 
+        margin-top: 15px; 
+        width: auto;
     }
     
     /* --- 4. 메시지 및 표 영역 --- */
-    .hidden { display: none; }
+    .hidden { display: none !important; }
     .message {
         font-size: 1.6rem;
         font-weight: bold;
@@ -116,6 +126,8 @@
         border: 2px dashed var(--color-rose);
         border-radius: 15px;
         background-color: #fffbf5;
+        width: 100%; 
+        box-sizing: border-box;
     }
     #menu_table_area h3 {
         font-size: 1.3rem;
@@ -140,18 +152,10 @@
         color: var(--color-border);
         font-size: 1.1rem;
     }
-
-    /* --- 6. 제작자 정보 스타일 --- */
-    #creator-info {
-        font-size: 0.9rem;
-        margin-top: 20px;
-        color: var(--color-text-dark);
-        opacity: 0.7;
-    }
 </style>
 </head>
 <body>
-<div id="question" class="card">
+<div id="question" class="card hidden">
     <p>해누리 초등학교 학생입니까? 🍎</p>
     <button id="yes_btn">네! 맞습니다! 🥳</button>
     <button id="no_btn">아닙니다 😥</button>
@@ -159,16 +163,27 @@
 
 <div id="portal" class="card hidden">
     <p id="today-date-display" class="date-text"></p> 
-    <p>오늘의 급식 메뉴를 확인합니다. 🍚</p>
+    <p>우리 학교 정보를 확인합니다. 🏫</p>
+    
     <button id="lunch-menu">급식 메뉴 🍚</button>
+    <button id="schedule-btn">학사 일정 확인 🗓️</button>
+    <button id="timetable-btn">오늘 시간표 ⏰</button>
+    
+    <button id="settings-btn">학년/반 설정 ⚙️</button> 
 </div>
 
 <div id="message_area" class="card hidden">
     <p id="message_text" class="message hidden"></p> 
     
-    <div id="changeDateButtons" style="margin-bottom: 10px; display: flex; justify-content: space-around; width: 100%;">
-        <button id="prev_day" style="background-color: var(--color-grass); transform: rotate(-1deg); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">⬅️ 어제 급식</button>
-        <button id="next_day" style="background-color: var(--color-sky); transform: rotate(1deg); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">내일 급식 ➡️</button>
+    <div id="dateNavigation" style="margin-bottom: 10px; width: 100%;">
+        <div id="dayNavButtons" class="hidden" style="display: flex; justify-content: space-around;">
+            <button id="prev_day" style="background-color: var(--color-grass); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">⬅️ 이전 날짜</button>
+            <button id="next_day" style="background-color: var(--color-sky); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">다음 날짜 ➡️</button>
+        </div>
+        <div id="monthNavButtons" class="hidden" style="display: flex; justify-content: space-around;">
+            <button id="prev_month" style="background-color: var(--color-rose); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">⏪ 이전 달</button>
+            <button id="next_month" style="background-color: var(--color-apricot); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">다음 달 ⏩</button>
+        </div>
     </div>
     
     <div id="menu_table_area" class="hidden">
@@ -176,22 +191,9 @@
             ✨ 오늘은 잔반 없는 날! 모두 깨끗이 먹어요! ✨
         </p>
         
-        <h3>오늘의 급식 메뉴</h3>
+        <h3>정보 제목</h3>
         <table id="menu_table">
             </table>
-
-        <div id="vote-area" style="margin-top: 20px; padding: 10px; border-top: 2px dashed var(--color-sky);">
-            <h4>오늘 급식 만족도 투표!</h4>
-            <div id="vote-buttons">
-                <button id="vote_up" data-vote="up" style="background-color: #a8ffb2; margin-right: 15px;">👍 최고!</button>
-                <button id="vote_down" data-vote="down" style="background-color: #ffb8b8;">👎 별로...</button>
-            </div>
-            <div id="vote-results" style="margin-top: 15px; font-size: 1.1rem; font-weight: bold;">
-                현재 투표 결과: <span id="result_up">0</span> / <span id="result_down">0</span>
-            </div>
-            <div id="vote-chart" style="height: 10px; background-color: #ddd; border-radius: 5px; margin-top: 10px;">
-                </div>
-        </div>
     </div>
 
     <button id="back_btn">이전 화면으로 돌아가기</button>
@@ -199,86 +201,172 @@
 
 <p id="creator-info">Made by 김대원</p>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
 <script>
-// --- JavaScript 시작 ---
-
-// ✨ Firebase 설정 객체 (⚠️ 반드시 YOUR_... 부분을 본인 값으로 변경!) ✨
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-
-// Firebase 초기화 및 Firestore 인스턴스 생성 (설정 객체가 유효해야 작동합니다)
-let db = null;
-try {
-    const app = firebase.initializeApp(firebaseConfig);
-    db = app.firestore();
-} catch (e) {
-    console.warn("Firebase 초기화 실패: API 키와 Project ID를 확인하세요. 투표 기능은 작동하지 않습니다.");
-}
-
+// ----------------------------------------------------
+// ✨ 1. 설정 및 변수 ✨
+// ----------------------------------------------------
 
 let currentDisplayDate = new Date();
+let currentScreenMode = 'portal'; 
 
 const NEIS_CONFIG = {
     KEY: "59ff63a46d7f41bf97464e3caf3a486c", 
     ATPT_OFCDC_SC_CODE: "B10", 
-    SD_SCHUL_CODE: "7130255", 
-    URL: "https://open.neis.go.kr/hub/mealServiceDietInfo",
+    SD_SCHUL_CODE: "7130255",  
+    // ✅ 시간표 서비스 ID 최종 수정 반영
+    TIME_TABLE_URL: "https://open.neis.go.kr/hub/elsTimetable",
+    MEAL_URL: "https://open.neis.go.kr/hub/mealServiceDietInfo",
+    SCHEDULE_URL: "https://open.neis.go.kr/hub/SchoolSchedule",
 };
 
-// --- API 호출 함수 (생략) ---
+// 사용자 설정 (학년/반)을 로컬 저장소에서 불러오거나 임시 기본값 설정 (5학년 5반)
+let userGrade = localStorage.getItem('user_grade') || '5'; 
+let userClass = localStorage.getItem('user_class') || '5'; 
+
+
+// ----------------------------------------------------
+// ✨ 2. 사용자 설정 함수 ✨
+// ----------------------------------------------------
+
+function saveSettings(grade, classNum) {
+    localStorage.setItem('user_grade', grade);
+    localStorage.setItem('user_class', classNum);
+    userGrade = grade;
+    userClass = classNum;
+}
+
+function promptForSettings() {
+    const grade = prompt(`현재 저장된 학년: ${userGrade || '없음'}\n새 학년을 숫자로 입력해 주세요 (예: 5)`);
+    if (grade === null) return; 
+    
+    const classNum = prompt(`현재 저장된 반: ${userClass || '없음'}\n새 반을 숫자로 입력해 주세요 (예: 5)`);
+    if (classNum === null) return;
+
+    if (grade && classNum && !isNaN(grade) && !isNaN(classNum)) {
+        saveSettings(grade, classNum);
+        alert(`설정 완료! ${grade}학년 ${classNum}반으로 저장되었습니다.`);
+        return true;
+    } else {
+        alert("❌ 잘못된 입력입니다. 학년과 반을 숫자로 다시 입력해 주세요.");
+        return false;
+    }
+}
+
+
+// ----------------------------------------------------
+// ✨ 3. API 호출 함수 ✨
+// ----------------------------------------------------
+
+// 3-1. 급식 API (일별)
 async function fetchMealDataFromAPI(dateObj) { 
-    
     const YYYYMMDD = `${dateObj.getFullYear()}${String(dateObj.getMonth() + 1).padStart(2, '0')}${String(dateObj.getDate()).padStart(2, '0')}`;
-    
-    const apiUrl = `${NEIS_CONFIG.URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
+    const apiUrl = `${NEIS_CONFIG.MEAL_URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
                    `&ATPT_OFCDC_SC_CODE=${NEIS_CONFIG.ATPT_OFCDC_SC_CODE}` +
                    `&SD_SCHUL_CODE=${NEIS_CONFIG.SD_SCHUL_CODE}&MLSV_YMD=${YYYYMMDD}`; 
                    
     try {
         const response = await fetch(apiUrl);
-        if (!response.ok) {
-            return { error: `[에러] 서버 응답 오류: HTTP ${response.status}.` };
-        }
-        
         const data = await response.json();
 
         if (data.mealServiceDietInfo) {
             let menuString = data.mealServiceDietInfo[1].row[0].DDISH_NM;
-            
             let menuArray = menuString
                 .split('<br/>')
                 .map(item => item.replace(/\([0-9\.]+\)/g, '').trim())
                 .filter(item => item.length > 0); 
-                
             return { success: true, menu: menuArray };
         } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
-            return { error: `[공지] ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 급식 정보는 찾을 수 없는데, 혹시 학교를 안가는날 아닐까요? 🤔` };
-        } else if (data.RESULT && data.RESULT.MESSAGE) {
-            return { error: `[NEIS 에러] ${data.RESULT.MESSAGE}` }; 
-        }
-        else {
-            return { error: `[에러] 알 수 없는 API 응답 형식입니다.` };
+            return { error: `[공지] ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 급식 정보는 찾을 수 없어요. 🤔` };
+        } else {
+            return { error: `[에러] 급식 정보를 가져오는 중 문제가 발생했습니다.` };
         }
     } catch (error) {
-        console.error("Fetch 또는 JSON 파싱 오류:", error);
-        return { error: `[에러] 정보를 가져오는 중 치명적인 오류 발생: ${error.message}` }; 
+        return { error: `[에러] 급식 API 통신 오류: 네트워크 연결을 확인하세요.` }; 
     }
 }
 
-// --- 표(Table)를 생성하여 표시하는 함수 (생략) ---
-function displayMenuAsTable(menuArray) {
+// 3-2. 학사 일정 API (월별)
+async function fetchScheduleDataFromAPI(dateObj) { 
+    // 해당 월의 1일
+    const startMonth = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const startDay = '01';
+    const startDate = `${dateObj.getFullYear()}${startMonth}${startDay}`;
+    
+    // 해당 월의 마지막 날
+    const lastDayOfMonth = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0).getDate();
+    const endDate = `${dateObj.getFullYear()}${startMonth}${lastDayOfMonth}`;
+
+    const apiUrl = `${NEIS_CONFIG.SCHEDULE_URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
+                   `&ATPT_OFCDC_SC_CODE=${NEIS_CONFIG.ATPT_OFCDC_SC_CODE}` +
+                   `&SD_SCHUL_CODE=${NEIS_CONFIG.SD_SCHUL_CODE}` +
+                   `&AA_FROM_YMD=${startDate}&AA_TO_YMD=${endDate}`;
+                   
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.SchoolSchedule) {
+            return { 
+                success: true, 
+                schedule: data.SchoolSchedule[1].row.map(item => ({ 
+                    date: item.AA_YMD, 
+                    content: item.EVENT_NM
+                }))
+            };
+        } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
+            return { error: `[공지] ${dateObj.getMonth() + 1}월 학사 일정을 찾을 수 없어요. 😥` };
+        } else {
+            return { error: `[에러] 학사 일정 정보를 가져오는 중 문제가 발생했습니다.` };
+        }
+    } catch (error) {
+        return { error: `[에러] 학사 일정 API 통신 오류: 네트워크 연결을 확인하세요.` }; 
+    }
+}
+
+
+// 3-3. 시간표 API (일별)
+async function fetchTimeTableDataFromAPI(dateObj, grade, classNum) { 
+    const YYYYMMDD = `${dateObj.getFullYear()}${String(dateObj.getMonth() + 1).padStart(2, '0')}${String(dateObj.getDate()).padStart(2, '0')}`;
+    
+    const apiUrl = `${NEIS_CONFIG.TIME_TABLE_URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
+                   `&ATPT_OFCDC_SC_CODE=${NEIS_CONFIG.ATPT_OFCDC_SC_CODE}` +
+                   `&SD_SCHUL_CODE=${NEIS_CONFIG.SD_SCHUL_CODE}` +
+                   `&AY=${dateObj.getFullYear()}` + 
+                   `&TI_FROM_YMD=${YYYYMMDD}&TI_TO_YMD=${YYYYMMDD}` + 
+                   `&GRADE=${grade}&CLASS_NM=${classNum}`; 
+                   
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        // ✅ 'elsTimetable' 키로 데이터 확인
+        if (data.elsTimetable) { 
+            return { 
+                success: true, 
+                schedule: data.elsTimetable[1].row.map(item => ({ 
+                    period: item.PERIO, 
+                    subject: item.ITRT_CNTNT
+                }))
+            };
+        } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
+            // ✅ 시간표가 없는 날 처리를 위해 특별한 에러 코드 반환
+            return { error: `INFO-200` }; 
+        } else {
+            return { error: `[에러] 시간표 정보를 가져오는 중 문제가 발생했습니다. (NEIS 키 오류)` };
+        }
+    } catch (error) {
+        return { error: `[에러] 시간표 API 통신 오류: 네트워크/CORS 문제일 수 있습니다.` }; 
+    }
+}
+
+
+// ----------------------------------------------------
+// ✨ 4. 데이터 표시 함수 ✨
+// ----------------------------------------------------
+
+function displayMealAsTable(menuArray) { 
     const tableBody = document.querySelector('#menu_table');
     tableBody.innerHTML = ''; 
-
     const headerRow = tableBody.insertRow();
     headerRow.innerHTML = '<th>No.</th><th>메뉴</th>';
 
@@ -291,7 +379,54 @@ function displayMenuAsTable(menuArray) {
     });
 }
 
-// --- 오늘 날짜를 가져와 HTML에 표시하는 함수 (생략) ---
+// 학사 일정 출력 함수
+function displayScheduleAsList(scheduleArray, year, month) {
+    const tableBody = document.querySelector('#menu_table');
+    tableBody.innerHTML = ''; 
+    
+    document.querySelector('#menu_table_area h3').textContent = `${year}년 ${month}월 학사 일정`; 
+
+    const headerRow = tableBody.insertRow();
+    headerRow.innerHTML = '<th>날짜</th><th>일정 내용</th>';
+
+    scheduleArray.sort((a, b) => a.date.localeCompare(b.date));
+
+    scheduleArray.forEach(item => {
+        const row = tableBody.insertRow();
+        const cellDate = row.insertCell();
+        const cellContent = row.insertCell();
+        
+        const formattedDate = `${item.date.substring(4, 6)}/${item.date.substring(6, 8)}`;
+        
+        cellDate.textContent = formattedDate;
+        cellDate.style.width = '30%';
+        cellDate.style.color = 'var(--color-rose)';
+        cellDate.style.fontWeight = 'bold';
+        cellContent.textContent = item.content;
+    });
+}
+
+// 시간표 출력 함수
+function displayTimeTable(timeTableArray, grade, classNum) {
+    const tableBody = document.querySelector('#menu_table');
+    tableBody.innerHTML = ''; 
+
+    document.querySelector('#menu_table_area h3').textContent = `${grade}학년 ${classNum}반 오늘 시간표`; 
+
+    const headerRow = tableBody.insertRow(0);
+    headerRow.innerHTML = '<th>교시</th><th>과목</th>';
+    
+    timeTableArray.forEach(item => {
+        const row = tableBody.insertRow();
+        const cellPeriod = row.insertCell();
+        const cellSubject = row.insertCell();
+        
+        cellPeriod.innerHTML = `<span style="font-size:1.1rem; color: var(--color-rose); font-weight:bold;">${item.period}교시</span>`;
+        cellSubject.textContent = item.subject;
+        cellSubject.style.textAlign = 'center';
+    });
+}
+
 function displayTodayDate() {
     const today = currentDisplayDate; 
     const year = today.getFullYear();
@@ -302,10 +437,19 @@ function displayTodayDate() {
     const todayActual = new Date();
     const isToday = todayActual.toDateString() === today.toDateString(); 
     
-    const datePrefix = isToday ? "오늘의" : `${month}월 ${date}일의`;
+    let datePrefix = "오늘의";
+    let formattedDate = '';
 
-    const formattedDate = `${datePrefix} 급식 메뉴 (${year}년 ${String(month).padStart(2, '0')}월 ${String(date).padStart(2, '0')}일 (${day}))`;
-    
+    if (currentScreenMode === 'meal' || currentScreenMode === 'timetable') {
+        datePrefix = isToday ? "오늘의" : `${month}월 ${date}일의`;
+        let subjectText = currentScreenMode === 'timetable' 
+            ? `${userGrade || '?'}학년 ${userClass || '?'}반의` 
+            : '';
+        formattedDate = `${subjectText} ${datePrefix} 정보 (${year}.${String(month).padStart(2, '0')}.${String(date).padStart(2, '0')} (${day}))`;
+    } else if (currentScreenMode === 'schedule') {
+        formattedDate = `${year}년 ${month}월의 주요 학사 일정`;
+    }
+
     const dateElement = document.getElementById('today-date-display');
     if (dateElement) {
         dateElement.textContent = formattedDate;
@@ -313,7 +457,10 @@ function displayTodayDate() {
 }
 
 
-// --- UI 요소 및 상태 관리 로직 ---
+// ----------------------------------------------------
+// ✨ 5. UI 및 상태 관리 ✨
+// ----------------------------------------------------
+
 const UI = {
     screens: { 
         question: document.getElementById("question"), 
@@ -327,201 +474,225 @@ const UI = {
         yes_btn: document.getElementById("yes_btn"), 
         no_btn: document.getElementById("no_btn"),
         lunch_menu_btn: document.getElementById("lunch-menu"),
+        schedule_btn: document.getElementById("schedule-btn"), 
+        timetable_btn: document.getElementById("timetable-btn"), 
+        settings_btn: document.getElementById("settings-btn"),
         menu_table_area: document.getElementById("menu_table_area"),
+        
+        day_nav_buttons: document.getElementById("dayNavButtons"),
+        month_nav_buttons: document.getElementById("monthNavButtons"),
         prev_btn: document.getElementById("prev_day"), 
         next_btn: document.getElementById("next_day"),
-        
-        // ✨ 잔반 없는 날 메시지 요소 추가 ✨
-        no_waste_msg: document.getElementById("no-waste-message"), 
+        prev_month_btn: document.getElementById("prev_month"), 
+        next_month_btn: document.getElementById("next_month"),
 
-        // 투표 관련 요소
-        vote_up_btn: document.getElementById("vote_up"),
-        vote_down_btn: document.getElementById("vote_down"),
-        result_up_span: document.getElementById("result_up"),
-        result_down_span: document.getElementById("result_down"),
-        vote_chart: document.getElementById("vote-chart"),
-        vote_area: document.getElementById("vote-area")
+        no_waste_msg: document.getElementById("no-waste-message"), 
     }
 };
 
-// --- 투표 기능 로직 함수 (Firebase 설정이 유효할 때만 작동) ---
-function updateVoteUI(upCount, downCount) {
-    if (!db) return; // DB가 없으면 작동 중지
-    UI.elements.result_up_span.textContent = upCount;
-    UI.elements.result_down_span.textContent = downCount;
-    
-    const total = upCount + downCount;
-    let upPercentage = total > 0 ? (upCount / total) * 100 : 50; 
-    
-    UI.elements.vote_chart.innerHTML = `
-        <div style="width: ${upPercentage}%; height: 100%; border-radius: 5px; 
-                   background-color: #4CAF50; transition: width 0.5s;"></div>
-    `;
-}
-
-async function castVote(type) {
-    if (!db) {
-        alert("투표 기능이 활성화되지 않았습니다. Firebase 설정을 확인해주세요.");
-        return;
-    }
-    const dateStr = `${currentDisplayDate.getFullYear()}${String(currentDisplayDate.getMonth() + 1).padStart(2, '0')}${String(currentDisplayDate.getDate()).padStart(2, '0')}`;
-    const voteDocRef = db.collection("meal_votes").doc(dateStr);
-    
-    try {
-        await db.runTransaction(async (transaction) => {
-            const doc = await transaction.get(voteDocRef);
-            
-            if (!doc.exists) {
-                transaction.set(voteDocRef, { up: type === 'up' ? 1 : 0, down: type === 'down' ? 1 : 0 });
-            } else {
-                const currentUp = doc.data().up || 0;
-                const currentDown = doc.data().down || 0;
-                
-                if (type === 'up') {
-                    transaction.update(voteDocRef, { up: currentUp + 1 });
-                } else {
-                    transaction.update(voteDocRef, { down: currentDown + 1 });
-                }
-            }
-        });
-        alert("투표가 완료되었습니다! 👍");
-        UI.elements.vote_up_btn.disabled = true;
-        UI.elements.vote_down_btn.disabled = true;
-        
-    } catch (e) {
-        console.error("투표 트랜잭션 실패:", e);
-        alert("투표 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-    }
-}
-
-function subscribeToVotes() {
-    if (!db) return; // DB가 없으면 구독 중지
-
-    const dateStr = `${currentDisplayDate.getFullYear()}${String(currentDisplayDate.getMonth() + 1).padStart(2, '0')}${String(currentDisplayDate.getDate()).padStart(2, '0')}`;
-    const voteDocRef = db.collection("meal_votes").doc(dateStr);
-
-    // 실시간 리스너 설정
-    voteDocRef.onSnapshot((doc) => {
-        if (doc.exists) {
-            const data = doc.data();
-            updateVoteUI(data.up || 0, data.down || 0);
-        } else {
-            updateVoteUI(0, 0);
-        }
-    }, (error) => {
-        console.error("실시간 투표 구독 오류:", error);
-    });
-}
-
 
 const StateManager = {
+    // 네비게이션 버튼 초기화 헬퍼
+    resetNavButtons: function() {
+        UI.elements.day_nav_buttons.classList.add("hidden");
+        UI.elements.month_nav_buttons.classList.add("hidden");
+        UI.elements.no_waste_msg.classList.add("hidden");
+        UI.elements.menu_table_area.classList.add("hidden"); 
+        UI.elements.message_text.classList.add("hidden"); 
+    },
+
     showScreen: function(screenId, stateClass = '') {
         Object.values(UI.screens).forEach(el => el.classList.add("hidden"));
         UI.screens[screenId].classList.remove("hidden");
+        
         UI.elements.body.classList.remove("access-state", "deny-state");
         if (stateClass) UI.elements.body.classList.add(stateClass);
-    },
-    
-    showMealMenu: async function(prevId, stateClass) {
-        this.showScreen("message_area", stateClass);
         
-        displayTodayDate(); 
-        document.querySelector('#menu_table_area h3').textContent = "급식 메뉴"; 
-        
-        // 🚨 잔반 없는 날 체크 로직
-        const isWednesday = currentDisplayDate.getDay() === 3; // 0=일, 3=수
-        if (isWednesday) {
-            UI.elements.no_waste_msg.classList.remove("hidden");
-        } else {
-            UI.elements.no_waste_msg.classList.add("hidden");
+        if (screenId === 'message_area') {
+            this.resetNavButtons();
         }
 
-        // 데이터 로딩 중에는 표 영역만 숨기고, 메시지를 표시
+        displayTodayDate();
+    },
+    
+    // ✅ 날짜/월 이동 및 화면 새로고침 함수
+    changeDateAndReload: function(amount, unit) {
+        if (unit === 'month') {
+            currentDisplayDate.setMonth(currentDisplayDate.getMonth() + amount);
+        } else { // 'day' or default
+            currentDisplayDate.setDate(currentDisplayDate.getDate() + amount);
+        }
+
+        if (currentScreenMode === 'meal') {
+            this.showMealMenu(null, 'access-state');
+        } else if (currentScreenMode === 'schedule') {
+            this.showSchedule();
+        } else if (currentScreenMode === 'timetable') {
+            this.showTimeTable();
+        }
+    },
+
+    // 5-1. 급식 화면 (일별 이동)
+    showMealMenu: async function(prevId, stateClass) {
+        currentScreenMode = 'meal';
+        this.showScreen("message_area", 'access-state');
+        
+        UI.elements.day_nav_buttons.classList.remove("hidden"); 
+        
         UI.elements.menu_table_area.classList.add("hidden");
         UI.elements.message_text.classList.remove("hidden"); 
-        UI.elements.message_text.textContent = "정보를 불러오는 중입니다... ⏳";
+        UI.elements.message_text.textContent = "급식 정보를 불러오는 중입니다... ⏳";
         
         const result = await fetchMealDataFromAPI(currentDisplayDate); 
         
         if (result.success) {
-            displayMenuAsTable(result.menu);
-            UI.elements.message_text.classList.add("hidden");
-            // 성공하면 표 영역을 다시 표시
+            displayMealAsTable(result.menu);
+            UI.elements.message_text.classList.add("hidden"); 
             UI.elements.menu_table_area.classList.remove("hidden"); 
             
-            // 투표 기능 로직
-            UI.elements.vote_area.classList.remove("hidden"); 
-            subscribeToVotes(); 
-            UI.elements.vote_up_btn.disabled = false;
-            UI.elements.vote_down_btn.disabled = false;
-
+            const dayOfWeek = currentDisplayDate.getDay();
+            if (dayOfWeek === 3 || dayOfWeek === 5) { 
+                UI.elements.no_waste_msg.classList.remove("hidden");
+            }
         } else {
             UI.elements.message_text.textContent = result.error;
-            // 실패하면 표 영역과 투표 영역을 숨김
+            UI.elements.message_text.classList.remove("hidden"); 
             UI.elements.menu_table_area.classList.add("hidden"); 
-            UI.elements.vote_area.classList.add("hidden");
         }
-
+        
         UI.elements.back_btn.onclick = () => {
             currentDisplayDate = new Date(); 
-            this.showScreen(prevId, 'access-state');
+            this.showScreen("portal", 'access-state');
+        }
+    },
+
+    // 5-2. 학사 일정 화면 (월별 이동)
+    showSchedule: async function() {
+        currentScreenMode = 'schedule';
+        this.showScreen("message_area", 'access-state');
+
+        UI.elements.month_nav_buttons.classList.remove("hidden"); // 월별 버튼 표시
+
+        UI.elements.menu_table_area.classList.add("hidden");
+        UI.elements.message_text.classList.remove("hidden"); 
+        UI.elements.message_text.textContent = `${currentDisplayDate.getFullYear()}년 ${currentDisplayDate.getMonth() + 1}월 학사 일정을 불러오는 중입니다... ⏳`;
+
+        const result = await fetchScheduleDataFromAPI(currentDisplayDate); 
+        
+        if (result.success) {
+            displayScheduleAsList(result.schedule, currentDisplayDate.getFullYear(), currentDisplayDate.getMonth() + 1);
+            UI.elements.message_text.classList.add("hidden");
+            UI.elements.menu_table_area.classList.remove("hidden"); 
+        } else {
+            UI.elements.message_text.textContent = result.error;
+            UI.elements.message_text.classList.remove("hidden"); 
+            UI.elements.menu_table_area.classList.add("hidden"); 
+        }
+        
+        UI.elements.back_btn.onclick = () => {
+            currentDisplayDate = new Date(); 
+            this.showScreen("portal", 'access-state');
         }
     },
     
-    showDenyMessage: function() {
-        this.showScreen("message_area", "deny-state");
-        UI.elements.menu_table_area.classList.add("hidden");
-        UI.elements.message_text.classList.remove("hidden");
-        UI.elements.message_text.textContent = "아직 해누리 친구가 아니군요! 다음에 꼭 만나요! 👋";
+    // 5-3. 시간표 화면 (일별 이동 + 데이터 없음 처리)
+    showTimeTable: async function() {
+        currentScreenMode = 'timetable';
+        this.showScreen("message_area", 'access-state');
         
-        UI.elements.back_btn.onclick = () => this.showScreen("question", "deny-state");
+        UI.elements.day_nav_buttons.classList.remove("hidden"); 
+
+        if (!userGrade || !userClass) {
+            UI.elements.message_text.classList.remove("hidden"); 
+            UI.elements.message_text.textContent = "⚠️ 시간표를 보기 위해 학년/반 설정이 필요합니다. 이전 화면으로 돌아가서 '학년/반 설정' 버튼을 눌러주세요.";
+            UI.elements.menu_table_area.classList.add("hidden"); 
+            
+            UI.elements.back_btn.onclick = () => { this.showScreen("portal", 'access-state'); }
+            return; 
+        }
+
+        UI.elements.menu_table_area.classList.add("hidden");
+        UI.elements.message_text.classList.remove("hidden"); 
+        UI.elements.message_text.textContent = `${userGrade}학년 ${userClass}반 시간표를 불러오는 중입니다... ⏳`;
+        
+        const result = await fetchTimeTableDataFromAPI(currentDisplayDate, userGrade, userClass); 
+        
+        if (result.success) {
+            displayTimeTable(result.schedule, userGrade, userClass);
+            UI.elements.message_text.classList.add("hidden");
+            UI.elements.menu_table_area.classList.remove("hidden"); 
+        } else {
+            // ✅ 시간표 없는 날 처리 (INFO-200)
+            const dateStr = `${currentDisplayDate.getMonth() + 1}월 ${currentDisplayDate.getDate()}일`;
+            let errorMessage = '';
+
+            if (result.error === 'INFO-200') {
+                 errorMessage = `[공지] ${dateStr}은 휴일이거나, ${userGrade}학년 ${userClass}반의 시간표 정보를 찾을 수 없어요. 🤔`;
+            } else {
+                 errorMessage = result.error;
+            }
+            
+            UI.elements.message_text.textContent = errorMessage;
+            UI.elements.message_text.classList.remove("hidden"); 
+            UI.elements.menu_table_area.classList.add("hidden"); 
+        }
+        
+        UI.elements.back_btn.onclick = () => {
+            currentDisplayDate = new Date(); 
+            this.showScreen("portal", 'access-state');
+        }
     },
     
-    changeDateAndReload: function(days) {
-        currentDisplayDate.setDate(currentDisplayDate.getDate() + days); 
-        this.showMealMenu("portal", "access-state"); 
-    },
-    
+    // 5-4. 이벤트 리스너 설정
     initEventListeners: function() {
-        // ... (네/아니오, 급식 메뉴, 날짜 이동 버튼 리스너)
+        // Yes/No 버튼
         UI.elements.yes_btn.addEventListener("click", () => {
             currentDisplayDate = new Date(); 
             this.showScreen("portal", "access-state");
         });
         UI.elements.no_btn.addEventListener("click", () => {
-            this.showDenyMessage();
+            this.showScreen("message_area", "deny-state");
+            UI.elements.message_text.textContent = "아직 해누리 친구가 아니군요! 다음에 꼭 만나요! 👋";
+            UI.elements.back_btn.onclick = () => this.showScreen("question", "deny-state");
         });
+        
+        // 기능 버튼
         UI.elements.lunch_menu_btn.addEventListener("click", () => {
             this.showMealMenu("portal", "access-state");
         });
+        UI.elements.schedule_btn.addEventListener("click", () => {
+            this.showSchedule();
+        });
+        UI.elements.timetable_btn.addEventListener("click", () => {
+            this.showTimeTable();
+        });
+        
+        // 설정 버튼
+        UI.elements.settings_btn.addEventListener("click", () => {
+            promptForSettings();
+        });
+
+        // 일별 날짜 이동 버튼 (급식, 시간표)
         UI.elements.prev_btn.addEventListener("click", () => {
-            this.changeDateAndReload(-1); 
+            this.changeDateAndReload(-1, 'day'); 
         });
         UI.elements.next_btn.addEventListener("click", () => {
-            this.changeDateAndReload(1); 
+            this.changeDateAndReload(1, 'day'); 
         });
 
-        // 투표 버튼 리스너
-        if (UI.elements.vote_up_btn) {
-            UI.elements.vote_up_btn.addEventListener("click", () => {
-                castVote('up');
-            });
-            UI.elements.vote_down_btn.addEventListener("click", () => {
-                castVote('down');
-            });
-        }
-
-        // 돌아가기 버튼 (초기 상태)
-        UI.elements.back_btn.onclick = () => {
-            currentDisplayDate = new Date(); 
-            this.showScreen("question", "deny-state");
-        }
+        // 월별 날짜 이동 버튼 (학사 일정)
+        UI.elements.prev_month_btn.addEventListener("click", () => {
+            this.changeDateAndReload(-1, 'month'); 
+        });
+        UI.elements.next_month_btn.addEventListener("click", () => {
+            this.changeDateAndReload(1, 'month'); 
+        });
     }
 };
 
-// --- 시스템 초기화 ---
+// --- 시스템 초기화 (앱 시작) ---
 StateManager.initEventListeners();
-displayTodayDate(); 
+StateManager.showScreen("question", "deny-state"); 
 </script>
 </body>
 </html>
