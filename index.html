@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>해누리 초등학교 우리들의 공간 🎀 (최종 보강)</title>
+<title>해누리 초등학교 우리들의 공간 🎀 (잔반 없는 날 추가)</title>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
     /* --- 1. CSS 변수 및 기본 설정 --- */
@@ -106,7 +106,7 @@
         font-weight: bold;
         margin-top: 20px;
         color: var(--color-text-dark);
-        margin-bottom: 20px; /* 메시지와 버튼 간격 조정 */
+        margin-bottom: 20px;
     }
 
     /* --- 5. 표 (Table) 디자인 --- */
@@ -172,9 +172,26 @@
     </div>
     
     <div id="menu_table_area" class="hidden">
+        <p id="no-waste-message" class="hidden" style="color: #FF5733; font-size: 1.5rem; transform: rotate(2deg); margin-bottom: 15px; background-color: #fff8e1; padding: 5px; border-radius: 10px; border: 2px solid #FF5733;">
+            ✨ 오늘은 잔반 없는 날! 모두 깨끗이 먹어요! ✨
+        </p>
+        
         <h3>오늘의 급식 메뉴</h3>
         <table id="menu_table">
             </table>
+
+        <div id="vote-area" style="margin-top: 20px; padding: 10px; border-top: 2px dashed var(--color-sky);">
+            <h4>오늘 급식 만족도 투표!</h4>
+            <div id="vote-buttons">
+                <button id="vote_up" data-vote="up" style="background-color: #a8ffb2; margin-right: 15px;">👍 최고!</button>
+                <button id="vote_down" data-vote="down" style="background-color: #ffb8b8;">👎 별로...</button>
+            </div>
+            <div id="vote-results" style="margin-top: 15px; font-size: 1.1rem; font-weight: bold;">
+                현재 투표 결과: <span id="result_up">0</span> / <span id="result_down">0</span>
+            </div>
+            <div id="vote-chart" style="height: 10px; background-color: #ddd; border-radius: 5px; margin-top: 10px;">
+                </div>
+        </div>
     </div>
 
     <button id="back_btn">이전 화면으로 돌아가기</button>
@@ -182,20 +199,42 @@
 
 <p id="creator-info">Made by 김대원</p>
 
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
 <script>
 // --- JavaScript 시작 ---
+
+// ✨ Firebase 설정 객체 (⚠️ 반드시 YOUR_... 부분을 본인 값으로 변경!) ✨
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Firebase 초기화 및 Firestore 인스턴스 생성 (설정 객체가 유효해야 작동합니다)
+let db = null;
+try {
+    const app = firebase.initializeApp(firebaseConfig);
+    db = app.firestore();
+} catch (e) {
+    console.warn("Firebase 초기화 실패: API 키와 Project ID를 확인하세요. 투표 기능은 작동하지 않습니다.");
+}
+
 
 let currentDisplayDate = new Date();
 
 const NEIS_CONFIG = {
-    // 🚨 주: API KEY와 학교 정보가 유효한지 꼭 다시 확인하세요!
     KEY: "59ff63a46d7f41bf97464e3caf3a486c", 
     ATPT_OFCDC_SC_CODE: "B10", 
     SD_SCHUL_CODE: "7130255", 
     URL: "https://open.neis.go.kr/hub/mealServiceDietInfo",
 };
 
-// --- API 호출 함수 (메뉴 배열 반환) ---
+// --- API 호출 함수 (생략) ---
 async function fetchMealDataFromAPI(dateObj) { 
     
     const YYYYMMDD = `${dateObj.getFullYear()}${String(dateObj.getMonth() + 1).padStart(2, '0')}${String(dateObj.getDate()).padStart(2, '0')}`;
@@ -206,9 +245,8 @@ async function fetchMealDataFromAPI(dateObj) {
                    
     try {
         const response = await fetch(apiUrl);
-        
         if (!response.ok) {
-            return { error: `[에러] 서버 응답 오류: HTTP ${response.status}. (인증키, URL 등록 확인 필요)` };
+            return { error: `[에러] 서버 응답 오류: HTTP ${response.status}.` };
         }
         
         const data = await response.json();
@@ -223,7 +261,6 @@ async function fetchMealDataFromAPI(dateObj) {
                 
             return { success: true, menu: menuArray };
         } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
-            // 수정된 메시지
             return { error: `[공지] ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 급식 정보는 찾을 수 없는데, 혹시 학교를 안가는날 아닐까요? 🤔` };
         } else if (data.RESULT && data.RESULT.MESSAGE) {
             return { error: `[NEIS 에러] ${data.RESULT.MESSAGE}` }; 
@@ -237,7 +274,7 @@ async function fetchMealDataFromAPI(dateObj) {
     }
 }
 
-// --- 표(Table)를 생성하여 표시하는 함수 ---
+// --- 표(Table)를 생성하여 표시하는 함수 (생략) ---
 function displayMenuAsTable(menuArray) {
     const tableBody = document.querySelector('#menu_table');
     tableBody.innerHTML = ''; 
@@ -254,7 +291,7 @@ function displayMenuAsTable(menuArray) {
     });
 }
 
-// --- 오늘 날짜를 가져와 HTML에 표시하는 함수 ---
+// --- 오늘 날짜를 가져와 HTML에 표시하는 함수 (생략) ---
 function displayTodayDate() {
     const today = currentDisplayDate; 
     const year = today.getFullYear();
@@ -291,11 +328,90 @@ const UI = {
         no_btn: document.getElementById("no_btn"),
         lunch_menu_btn: document.getElementById("lunch-menu"),
         menu_table_area: document.getElementById("menu_table_area"),
-        // ✨ 변경된 ID로 연결 확인 ✨
         prev_btn: document.getElementById("prev_day"), 
-        next_btn: document.getElementById("next_day")
+        next_btn: document.getElementById("next_day"),
+        
+        // ✨ 잔반 없는 날 메시지 요소 추가 ✨
+        no_waste_msg: document.getElementById("no-waste-message"), 
+
+        // 투표 관련 요소
+        vote_up_btn: document.getElementById("vote_up"),
+        vote_down_btn: document.getElementById("vote_down"),
+        result_up_span: document.getElementById("result_up"),
+        result_down_span: document.getElementById("result_down"),
+        vote_chart: document.getElementById("vote-chart"),
+        vote_area: document.getElementById("vote-area")
     }
 };
+
+// --- 투표 기능 로직 함수 (Firebase 설정이 유효할 때만 작동) ---
+function updateVoteUI(upCount, downCount) {
+    if (!db) return; // DB가 없으면 작동 중지
+    UI.elements.result_up_span.textContent = upCount;
+    UI.elements.result_down_span.textContent = downCount;
+    
+    const total = upCount + downCount;
+    let upPercentage = total > 0 ? (upCount / total) * 100 : 50; 
+    
+    UI.elements.vote_chart.innerHTML = `
+        <div style="width: ${upPercentage}%; height: 100%; border-radius: 5px; 
+                   background-color: #4CAF50; transition: width 0.5s;"></div>
+    `;
+}
+
+async function castVote(type) {
+    if (!db) {
+        alert("투표 기능이 활성화되지 않았습니다. Firebase 설정을 확인해주세요.");
+        return;
+    }
+    const dateStr = `${currentDisplayDate.getFullYear()}${String(currentDisplayDate.getMonth() + 1).padStart(2, '0')}${String(currentDisplayDate.getDate()).padStart(2, '0')}`;
+    const voteDocRef = db.collection("meal_votes").doc(dateStr);
+    
+    try {
+        await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(voteDocRef);
+            
+            if (!doc.exists) {
+                transaction.set(voteDocRef, { up: type === 'up' ? 1 : 0, down: type === 'down' ? 1 : 0 });
+            } else {
+                const currentUp = doc.data().up || 0;
+                const currentDown = doc.data().down || 0;
+                
+                if (type === 'up') {
+                    transaction.update(voteDocRef, { up: currentUp + 1 });
+                } else {
+                    transaction.update(voteDocRef, { down: currentDown + 1 });
+                }
+            }
+        });
+        alert("투표가 완료되었습니다! 👍");
+        UI.elements.vote_up_btn.disabled = true;
+        UI.elements.vote_down_btn.disabled = true;
+        
+    } catch (e) {
+        console.error("투표 트랜잭션 실패:", e);
+        alert("투표 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    }
+}
+
+function subscribeToVotes() {
+    if (!db) return; // DB가 없으면 구독 중지
+
+    const dateStr = `${currentDisplayDate.getFullYear()}${String(currentDisplayDate.getMonth() + 1).padStart(2, '0')}${String(currentDisplayDate.getDate()).padStart(2, '0')}`;
+    const voteDocRef = db.collection("meal_votes").doc(dateStr);
+
+    // 실시간 리스너 설정
+    voteDocRef.onSnapshot((doc) => {
+        if (doc.exists) {
+            const data = doc.data();
+            updateVoteUI(data.up || 0, data.down || 0);
+        } else {
+            updateVoteUI(0, 0);
+        }
+    }, (error) => {
+        console.error("실시간 투표 구독 오류:", error);
+    });
+}
 
 
 const StateManager = {
@@ -311,6 +427,14 @@ const StateManager = {
         
         displayTodayDate(); 
         document.querySelector('#menu_table_area h3').textContent = "급식 메뉴"; 
+        
+        // 🚨 잔반 없는 날 체크 로직
+        const isWednesday = currentDisplayDate.getDay() === 3; // 0=일, 3=수
+        if (isWednesday) {
+            UI.elements.no_waste_msg.classList.remove("hidden");
+        } else {
+            UI.elements.no_waste_msg.classList.add("hidden");
+        }
 
         // 데이터 로딩 중에는 표 영역만 숨기고, 메시지를 표시
         UI.elements.menu_table_area.classList.add("hidden");
@@ -324,10 +448,18 @@ const StateManager = {
             UI.elements.message_text.classList.add("hidden");
             // 성공하면 표 영역을 다시 표시
             UI.elements.menu_table_area.classList.remove("hidden"); 
+            
+            // 투표 기능 로직
+            UI.elements.vote_area.classList.remove("hidden"); 
+            subscribeToVotes(); 
+            UI.elements.vote_up_btn.disabled = false;
+            UI.elements.vote_down_btn.disabled = false;
+
         } else {
             UI.elements.message_text.textContent = result.error;
-            // 실패하면 표 영역을 숨김
+            // 실패하면 표 영역과 투표 영역을 숨김
             UI.elements.menu_table_area.classList.add("hidden"); 
+            UI.elements.vote_area.classList.add("hidden");
         }
 
         UI.elements.back_btn.onclick = () => {
@@ -351,7 +483,7 @@ const StateManager = {
     },
     
     initEventListeners: function() {
-        // 1. 네/아니오 버튼
+        // ... (네/아니오, 급식 메뉴, 날짜 이동 버튼 리스너)
         UI.elements.yes_btn.addEventListener("click", () => {
             currentDisplayDate = new Date(); 
             this.showScreen("portal", "access-state");
@@ -359,13 +491,9 @@ const StateManager = {
         UI.elements.no_btn.addEventListener("click", () => {
             this.showDenyMessage();
         });
-        
-        // 2. 급식 메뉴 버튼
         UI.elements.lunch_menu_btn.addEventListener("click", () => {
             this.showMealMenu("portal", "access-state");
         });
-        
-        // 3. 날짜 이동 버튼 이벤트 리스너 (정상 연결)
         UI.elements.prev_btn.addEventListener("click", () => {
             this.changeDateAndReload(-1); 
         });
@@ -373,7 +501,17 @@ const StateManager = {
             this.changeDateAndReload(1); 
         });
 
-        // 4. 돌아가기 버튼 (초기 상태)
+        // 투표 버튼 리스너
+        if (UI.elements.vote_up_btn) {
+            UI.elements.vote_up_btn.addEventListener("click", () => {
+                castVote('up');
+            });
+            UI.elements.vote_down_btn.addEventListener("click", () => {
+                castVote('down');
+            });
+        }
+
+        // 돌아가기 버튼 (초기 상태)
         UI.elements.back_btn.onclick = () => {
             currentDisplayDate = new Date(); 
             this.showScreen("question", "deny-state");
