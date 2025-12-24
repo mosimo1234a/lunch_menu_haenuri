@@ -3,1280 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>해누리 초등학교 5학년 우리들의 공간 🏫</title>
+<title>해누리 초등학교 5학년 우리들의 공간 🏫🎄</title>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
-    /* --- 1. CSS 변수 및 기본 설정 --- */
     :root {
-        --color-apricot: #ffd9a8;
-        --color-sky: #cceeff; --color-rose: #ffc9d4;
+        --color-apricot: #ffd9a8; --color-sky: #a8d5ff; --color-rose: #ffc9d4;
         --color-grass: #d2f6c9; --color-text-dark: #3a322b; 
         --color-card-bg: #ffffff; --color-border: #3a322b;
+        --color-gold: #FFD700;
     }
 
     body {
         font-family: 'Jua', sans-serif;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
-        background-color: var(--color-apricot);
-        color: var(--color-text-dark);
-        background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="1.5" fill="%23f6f0e9" opacity="0.8"/><path d="M15,15 L15,13 L15,11 L13,13 Z" fill="%23f6f0e9" opacity="0.6"/></svg>');
-        background-size: 40px 40px;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        min-height: 100vh; margin: 0; background-color: var(--color-sky); color: var(--color-text-dark);
+        background-image: 
+            radial-gradient(circle at 50% 50%, white 2.5px, transparent 2.5px),
+            radial-gradient(circle at 20% 80%, white 3.5px, transparent 3.5px),
+            radial-gradient(circle at 80% 10%, white 3px, transparent 3px);
+        background-size: 150px 150px, 250px 250px, 200px 200px;
+        animation: snow-animation 12s linear infinite;
+        overflow-x: hidden;
+    }
+    @keyframes snow-animation {
+        0% { background-position: 0 0, 0 0, 0 0; }
+        100% { background-position: 60px 1000px, -60px 1000px, 40px 1000px; }
     }
 
-    /* --- 2. 카드 디자인 --- */
     .card {
-        background-color: var(--color-card-bg);
-        border-radius: 35px;
-        padding: 40px;
-        border: 4px dashed var(--color-border);
-        box-shadow: 6px 6px 0 0 var(--color-border); 
-        text-align: center;
-        width: 90%;
-        max-width: 400px;
-        transform: rotate(-3deg);
-        box-sizing: border-box;
+        background-color: var(--color-card-bg); border-radius: 35px; padding: 35px;
+        border: 4px dashed var(--color-border); box-shadow: 6px 6px 0 0 var(--color-border);
+        text-align: center; width: 92%; max-width: 400px; transform: rotate(-3deg);
+        box-sizing: border-box; position: relative; margin: 15px;
     }
+    p { font-size: 2rem; font-weight: bold; margin-bottom: 25px; line-height: 1.2; }
     
-    p {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 30px;
-        line-height: 1.2;
-    }
-    
-    .date-text {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 10px; 
-        color: var(--color-text-dark); 
-        transform: rotate(1deg);
-    }
-    
-    /* 사용자 정보 표시 */
     #user-info-display {
-        font-size: 1.4rem;
-        color: var(--color-rose);
-        margin-top: -10px;
-        margin-bottom: 10px; /* XP Bar 공간 확보 */
-        background-color: #fff8e1;
-        border-radius: 10px;
-        padding: 8px;
-        border: 2px solid var(--color-rose);
-        transform: rotate(1deg);
+        font-size: 1.2rem; color: #333; margin-bottom: 10px;
+        background-color: #fff8e1; border-radius: 15px; padding: 10px;
+        border: 2.5px solid var(--color-gold); transform: rotate(1deg);
     }
+    .title-badge { display: inline-block; padding: 2px 10px; border-radius: 10px; background-color: #333; color: var(--color-gold); font-size: 0.85rem; margin-top: 5px; }
 
-    /* XP Bar 스타일 */
     #xp-bar-container {
-        width: 100%;
-        height: 18px;
-        background-color: #eee;
-        border-radius: 9px;
-        margin-bottom: 30px;
-        overflow: hidden;
-        border: 2px solid var(--color-border);
-        box-shadow: 2px 2px 0 0 var(--color-border);
+        width: 100%; height: 18px; background-color: #eee; border-radius: 10px;
+        margin-bottom: 25px; overflow: hidden; border: 2px solid var(--color-border);
+        position: relative; box-shadow: 2px 2px 0 0 var(--color-border);
     }
-    #xp-bar {
-        height: 100%;
-        width: 0%;
-        background-color: #00b0ff;
-        /* Duolingo Blue */
-        transition: width 0.5s ease-out;
-        position: relative;
-    }
-    #xp-text {
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        line-height: 18px;
-        font-size: 0.8rem;
-        font-weight: bold;
-        color: var(--color-text-dark);
-        text-shadow: 1px 1px 0 #fff;
-    }
+    #xp-bar { height: 100%; width: 0%; background-color: var(--color-gold); transition: width 0.6s; }
+    #xp-text { position: absolute; width: 100%; text-align: center; line-height: 18px; font-size: 0.8rem; font-weight: bold; }
 
-
-    /* --- 3. 버튼 디자인 --- */
     button {
-        font-family: 'Jua', sans-serif;
-        font-weight: bold;
-        font-size: 1.2rem;
-        padding: 12px 25px;
-        margin: 8px;
-        border-radius: 30px;
-        border: 4px solid var(--color-border); 
-        color: var(--color-border);
-        cursor: pointer;
-        box-shadow: 4px 4px 0px 0px var(--color-border);
-        transform: rotate(2deg); 
-        background-color: #fff;
-        transition: all 0.1s; 
-        width: 100%;
-        /* 메인 버튼 모두 100% */
+        font-family: 'Jua', sans-serif; font-weight: bold; font-size: 1.1rem;
+        padding: 12px 15px; margin: 6px 0; border-radius: 30px; border: 4px solid var(--color-border);
+        cursor: pointer; background-color: #fff; width: 100%; transition: 0.1s;
+        box-shadow: 4px 4px 0px 0px var(--color-border); transform: rotate(2deg);
     }
+    button:active { transform: scale(0.96) rotate(1deg); box-shadow: 2px 2px 0px 0px var(--color-border); }
 
-    button:hover {
-        transform: scale(1.02) rotate(2deg);
-        box-shadow: 6px 6px 0px 0px var(--color-border);
+    /* 돌림판 UI */
+    #roulette-wrap { position: relative; width: 220px; height: 220px; margin: 15px auto; }
+    #roulette {
+        width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--color-border);
+        background: conic-gradient(#ffadad 0% 10%, #ffd6a5 10% 30%, #fff9c4 30% 60%, #caffbf 60% 85%, #9bf6ff 85% 95%, var(--color-gold) 95% 100%);
+        transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
     }
+    #roulette-pin { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 25px solid #ff4444; z-index: 5; }
 
-    button:active {
-        transform: scale(0.97) rotate(1deg);
-        box-shadow: 2px 2px 0px 0px var(--color-border); 
-    }
-
-    #lunch-menu { background-color: var(--color-rose); transform: rotate(-4deg);
-    }
-    #schedule-btn { background-color: var(--color-grass); transform: rotate(3deg); }
-    #timetable-btn { background-color: var(--color-sky); transform: rotate(-1deg);
-    }
-    #minigame-btn { background-color: var(--color-apricot); transform: rotate(5deg);
-    } 
+    #game-area { width: 100%; height: 160px; background-color: #e0f2ff; border: 3px solid var(--color-border); border-radius: 20px; position: relative; overflow: hidden; margin-bottom: 15px; }
+    #thief { position: absolute; font-size: 3rem; cursor: pointer; display: none; user-select: none; }
     
-    #yes_btn { background-color: var(--color-rose); transform: rotate(-4deg);
-    }
-    #no_btn { background-color: var(--color-grass); }
-    #back_btn { background-color: var(--color-sky);
-    }
-    #settings-btn { 
-        background-color: var(--color-apricot); 
-        font-size:0.9rem; 
-        padding: 10px 20px;
-        margin-top: 15px; 
-        width: auto;
-    }
-    
-    #ranking-btn-group {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 15px;
-    }
-    #ranking-btn-group button {
-        flex-grow: 1;
-        width: 48%;
-        margin: 0 4px;
-        font-size: 1rem;
-        padding: 10px 15px;
-        box-shadow: 3px 3px 0px 0px var(--color-border);
-        transform: rotate(0deg) !important;
-    }
-    #ranking-btn-group .active {
-        background-color: gold !important;
-        border-color: darkgoldenrod !important;
-        box-shadow: 1px 1px 0 0 var(--color-border);
-    }
-
-    #clear-ranking-btn {
-        background-color: #fce8e8 !important;
-        color: #cc0000 !important; 
-        border-color: #cc0000 !important; 
-        margin-top: 20px;
-    }
-
-    /* --- 4. 메시지 및 표 영역 --- */
-    .hidden { display: none !important;
-    }
-    .message {
-        font-size: 1.6rem;
-        font-weight: bold;
-        margin-top: 20px;
-        color: var(--color-text-dark);
-        margin-bottom: 20px;
-    }
-
-    /* --- 5. 미니 게임 스타일 --- */
-    #minigame-screen {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    #game-area {
-        width: 100%;
-        height: 150px; background-color: #f6f0e9;
-        border: 3px solid var(--color-border); border-radius: 15px;
-        margin-bottom: 20px; position: relative; overflow: hidden;
-    }
-    #thief {
-        position: absolute; top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 3rem; cursor: pointer; transition: transform 0.1s, opacity 0.3s; 
-        opacity: 0; background-color: var(--color-rose); border-radius: 50%;
-        padding: 5px 15px; border: 2px dashed var(--color-border); line-height: 1; user-select: none; 
-    }
-    #game-status { font-size: 1.5rem;
-        margin-bottom: 15px; color: var(--color-text-dark); }
-    #game-score { font-size: 2rem; color: var(--color-rose); font-weight: bold;
-    }
-    .start-game-btn { background-color: var(--color-sky) !important; width: auto !important;
-    }
-
-    /* --- 6. 표 (Table) 디자인 --- */
-    #menu_table_area, #ranking-table-area {
-        margin-top: 20px;
-        padding: 10px; border: 2px dashed var(--color-sky);
-        border-radius: 15px; background-color: #fffbf5; width: 100%;
-        box-sizing: border-box; max-height: 400px; overflow-y: auto;
-    }
-    #ranking-table, #menu_table {
-        width: 100%; border-collapse: collapse; font-size: 1rem;
-    }
-    #ranking-table th, #ranking-table td, #menu_table th, #menu_table td {
-        border: 1px solid var(--color-border);
-        padding: 8px 5px; text-align: center;
-    }
-    #ranking-table th, #menu_table th {
-        background-color: var(--color-sky);
-        color: var(--color-border);
-        font-size: 1.1rem; position: sticky; top: 0; z-index: 10;
-    }
-    #ranking-table tbody tr:nth-child(1) { background-color: #FFD700;
-        font-weight: bold; }
-    #ranking-table tbody tr:nth-child(2) { background-color: #C0C0C0;
-    }
-    #ranking-table tbody tr:nth-child(3) { background-color: #CD7F32;
-    }
-    
-    /* 김대원 문구 숨김 */
-    #creator-info { display: none !important;
-    }
+    #menu_table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    #menu_table td { border: 1px solid var(--color-border); padding: 8px; text-align: center; }
+    .hidden { display: none !important; }
 </style>
 </head>
 <body>
+
 <div id="question" class="card">
     <p>해누리 초등학교 학생입니까? 🍎</p>
-    <button id="yes_btn">네! 맞습니다! 🥳</button>
-    <button id="no_btn">아닙니다 😥</button>
+    <button id="yes_btn" style="background-color: var(--color-rose); transform: rotate(-3deg);">네! 맞습니다! 🥳</button>
+    <button onclick="alert('반가웠어요!')" style="background-color: var(--color-grass);">아닙니다 😥</button>
 </div>
 
 <div id="portal" class="card hidden">
-    <p id="today-date-display" class="date-text"></p> 
-    <p id="user-info-display">환영합니다!</p>
+    <div id="user-info-display"></div>
+    <div id="xp-bar-container"><div id="xp-bar"></div><div id="xp-text"></div></div>
     
-    <div id="xp-bar-container">
-        <div id="xp-bar"></div>
-        <div id="xp-text"></div>
-    </div>
-    <p>우리 학교 정보를 확인합니다. 🏫</p>
+    <button onclick="StateManager.loadData('meal')" style="background-color: var(--color-rose); transform: rotate(-2deg);">급식 메뉴 🍚</button>
+    <button onclick="StateManager.loadData('timetable')" style="background-color: #cceeff; transform: rotate(-1deg);">오늘 시간표 ⏰</button>
+    <button onclick="StateManager.showScreen('roulette-screen')" style="background-color: var(--color-gold); transform: rotate(1deg);">행운의 돌림판 (5회) 🎡</button>
+    <button id="title-list-btn" onclick="showTitleList()" style="background-color: #e1f5fe; transform: rotate(-2deg);">나의 칭호 목록 🎖️</button>
+    <button onclick="StateManager.showScreen('minigame-screen')" style="background-color: var(--color-apricot); transform: rotate(3deg);">선물 훔치기 게임 🎮</button>
     
-    <button id="lunch-menu">급식 메뉴 🍚</button>
-    <button id="schedule-btn">학사 일정 확인 🗓️</button>
-    <button id="timetable-btn">오늘 시간표 ⏰</button>
-    <button id="minigame-btn">미니 게임! 🕹️</button>
-    
-    <button id="settings-btn">학년/반/이름 설정 ⚙️</button> 
+    <button id="inquiry-btn" class="hidden" onclick="StateManager.showScreen('inquiry-screen')" style="background-color: #e1bee7;">운영자 문의 ✉️</button>
+    <button onclick="promptForSettings()" style="font-size: 0.8rem; width: auto; margin-top: 15px; border-width: 2px;">정보 설정 ⚙️</button>
+</div>
+
+<div id="roulette-screen" class="card hidden">
+    <p style="font-size: 1.5rem;">🎡 행운의 룰렛</p>
+    <p id="chance-text" style="font-size: 1rem; color: #ff5252; margin-top:-15px;">남은 기회: 5번</p>
+    <div id="roulette-wrap"><div id="roulette-pin"></div><div id="roulette"></div></div>
+    <button id="spin-btn" onclick="spinRoulette()" style="background-color: #ff5252; color: white;">돌리기!! 🚀</button>
+    <button onclick="StateManager.showScreen('portal')">돌아가기</button>
 </div>
 
 <div id="message_area" class="card hidden">
-    <p id="message_text" class="message hidden"></p> 
-    
-    <div id="dateNavigation" style="margin-bottom: 10px; width: 100%;">
-        <div id="dayNavButtons" class="hidden" style="display: flex; justify-content: space-around;">
-            <button id="prev_day" style="background-color: var(--color-grass); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">⬅️ 이전 날짜</button>
-            <button id="next_day" style="background-color: var(--color-sky); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">다음 날짜 ➡️</button>
-        </div>
-        <div id="monthNavButtons" class="hidden" style="display: flex; justify-content: space-around;">
-            <button id="prev_month" style="background-color: var(--color-rose); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">⏪ 이전 달</button>
-            <button id="next_month" style="background-color: var(--color-apricot); font-size: 1rem; padding: 8px 15px; flex-grow: 1; margin: 5px;">다음 달 ⏩</button>
-        </div>
-    </div>
-    
-    <div id="menu_table_area" class="hidden">
-        <p id="no-waste-message" class="hidden" style="color: #FF5733; font-size: 1.5rem; transform: rotate(2deg); margin-bottom: 15px; background-color: #fff8e1; padding: 5px; border-radius: 10px; border: 2px solid #FF5733;">
-            ✨ 오늘은 잔반 없는 날! 모두 깨끗이 먹어요! ✨
-        </p>
-        
-        <h3>정보 제목</h3>
-        <table id="menu_table"></table>
-    </div>
-
-    <button id="back_btn">이전 화면으로 돌아가기</button>
+    <p id="display-title" style="font-size: 1.5rem;"></p>
+    <div style="max-height: 250px; overflow-y: auto; background: white; border-radius: 15px;"><table id="menu_table"></table></div>
+    <button onclick="StateManager.showScreen('portal')" style="margin-top:15px;">뒤로 가기</button>
 </div>
 
-<div id="minigame-screen" class="card hidden"> 
-    <p>🕹️ 급식 도둑 잡아라!</p>
-    <div id="game-status">도전!</div>
-    
-    <div id="game-area">
-        <span id="thief">🍚</span>
-    </div>
-
-    <button id="start-game-btn" class="start-game-btn" onclick="game.start()">게임 시작!</button>
-    <p id="game-score">점수: 0점</p>
-    
-    <button id="show-ranking-btn" onclick="StateManager.showRanking('minigame')">🏆 전체 랭킹 보기</button> 
-    <button id="minigame-back-btn" onclick="StateManager.showScreen('portal', 'access-state')">포털로 돌아가기</button>
+<div id="minigame-screen" class="card hidden">
+    <p style="font-size: 1.5rem;">🎁 선물 훔치기</p>
+    <div id="game-area"><span id="thief">🎅</span></div>
+    <p id="game-score" style="font-size: 1.2rem; color: var(--color-rose);">점수: 0점</p>
+    <button id="start-game-btn" onclick="startThiefGame()" style="background-color: var(--color-sky);">게임 시작!</button>
+    <button onclick="StateManager.showScreen('portal')">그만하기</button>
 </div>
 
-<div id="ranking-screen" class="card hidden">
-    <p>🥇 해누리 초 랭킹</p>
-    
-    <div id="ranking-btn-group">
-        <button id="minigame-ranking-btn" onclick="StateManager.showRanking('minigame')">미니게임 최고 기록</button>
-        <button id="xp-ranking-btn" onclick="StateManager.showRanking('xp')">누적 XP 랭킹</button>
-    </div>
-    <div id="ranking-table-area">
-        <h3 id="ranking-title-text" style="color: var(--color-rose); margin-bottom: 10px;">미니게임 최고 기록</h3>
-        <table id="ranking-table">
-            <thead>
-                <tr>
-                    <th>순위</th>
-                    <th>학년/반</th>
-                    <th>이름</th>
-                    <th>점수/XP</th>
-                </tr>
-            </thead>
-            <tbody>
-                </tbody>
-        </table>
-    </div>
-    
-    <button 
-        id="clear-ranking-btn" 
-        class="hidden" 
-        style="background-color: #fce8e8; color: #cc0000; border-color: #cc0000; margin-top: 20px;"
-        onclick="clearRankingAndReload()">
-        ⛔ 랭킹 기록 전체 초기화 (관리자 전용)
-    </button>
-    <button id="ranking-back-btn" onclick="StateManager.showScreen('portal', 'access-state')">포털로 돌아가기</button>
+<div id="title-screen" class="card hidden">
+    <p style="font-size: 1.5rem;">🎖️ 나의 칭호</p>
+    <div id="title-container" style="max-height: 250px; overflow-y: auto; text-align: left; padding: 10px;"></div>
+    <button onclick="StateManager.showScreen('portal')" style="margin-top:15px;">닫기</button>
 </div>
 
-
-<p id="creator-info">Made by 김대원</p>
+<div id="inquiry-screen" class="card hidden">
+    <p style="font-size: 1.5rem;">✉️ 운영자 문의</p>
+    <textarea id="inquiry-content" style="width:100%; height:100px; border:3px solid var(--color-border); border-radius:15px; padding:10px; font-family:'Jua';" placeholder="내용을 입력하세요..."></textarea>
+    <button onclick="sendInquiry()" style="background-color: var(--color-rose); margin-top:10px;">전송하기 🚀</button>
+    <button onclick="StateManager.showScreen('portal')">취소</button>
+</div>
 
 <script>
-// ----------------------------------------------------
-// ✨ 1. 설정 및 변수 ✨
-// ----------------------------------------------------
+// --- [데이터 설정] ---
+const ADMIN_CONF = { g: '5', c: '5', n: '1', name: '강민준', pw: 'minjun55' }; 
+const OPERATOR_CONF = { g: '5', c: '5', n: '4', name: '김대원', pw: 'eodnjs14' }; 
+const NEIS_CONF = { KEY: "59ff63a46d7f41bf97464e3caf3a486c", ATPT: "B10", SD: "7130255" };
 
-let currentDisplayDate = new Date();
-let currentScreenMode = 'portal'; 
-
-const NEIS_CONFIG = {
-    KEY: "59ff63a46d7f41bf97464e3caf3a486c", 
-    ATPT_OFCDC_SC_CODE: "B10", 
-    SD_SCHUL_CODE: "7130255",  
-    TIME_TABLE_URL: "https://open.neis.go.kr/hub/elsTimetable",
-    MEAL_URL: "https://open.neis.go.kr/hub/mealServiceDietInfo",
-    SCHEDULE_URL: "https://open.neis.go.kr/hub/SchoolSchedule",
+const TITLE_DB = {
+    'sprout': '해누리 새싹 🌱', 'explorer': '정보 탐험가 🧭', 
+    'santa': '🎅 산타의 조수', 'rudolph': '🦌 루돌프 코', 'gift': '🎁 선물 도둑'
 };
 
-// 사용자 설정 및 XP, 관리자 상태를 로컬 저장소에서 불러오기
-let userGrade = localStorage.getItem('user_grade') || '5'; 
-let userClass = localStorage.getItem('user_class') || '5'; 
 let userName = localStorage.getItem('user_name') || '';
+let userGrade = localStorage.getItem('user_grade') || '';
+let userClass = localStorage.getItem('user_class') || '';
+let role = localStorage.getItem('user_role') || 'user';
+let myTitles = JSON.parse(localStorage.getItem('my_titles') || '["sprout"]');
+let activeTitle = localStorage.getItem('active_title') || 'sprout';
+let currentRot = 0;
+let isSpinning = false;
 
-// 랭킹 저장소 키
-const RANKING_KEY_MINIGAME = "minigame_scores"; 
-const RANKING_KEY_XP = "total_xp_ranking";
- // XP 랭킹 키
-
-// 🚨 관리자 정보 정의 및 상태
-const ADMIN_GRADE = '5';
-const ADMIN_CLASS = '5';
- const ADMIN_NAME = '김대원';
-const ADMIN_PASSWORD = 'eodnjs14';
-let isAdmin = localStorage.getItem('is_admin') === 'true';
- // XP 관련 설정
-const XP_LEVELS = [
-    { threshold: 0, level: 1, title: '새싹 해누리 🌱', next: 100 },
-    { threshold: 100, level: 2, title: '정보 탐험가 🧭', next: 300 },
-    { threshold: 300, level: 3, title: '급식 수호자 🛡️', next: 600 },
-    { threshold: 600, level: 4, title: '학교 마스터 🎓', next: 99999 },
-];
- const XP_DAILY_KEY = 'xp_daily_log'; // 오늘 XP 획득 로그 키
-
-// ----------------------------------------------------
-// ✨ 2. XP 및 레벨 관리 함수 ✨
-// ----------------------------------------------------
-
-function getXPData() {
-    const xpJson = localStorage.getItem(RANKING_KEY_XP);
- try {
-        return xpJson ? JSON.parse(xpJson) : {};
- } catch (e) {
-        console.error("Error parsing XP data:", e);
-        return {};
- }
-}
-
-function getUserXP() {
-    const xpData = getXPData();
-    const userKey = `${userGrade}-${userClass}-${userName}`;
-    return xpData[userKey] ? xpData[userKey].totalXP : 0;
- }
-
-function getLevelInfo(xp) {
-    let currentLevel = XP_LEVELS[0];
- for (const info of XP_LEVELS) {
-        if (xp >= info.threshold) {
-            currentLevel = info;
- } else {
-            break;
- }
-    }
-    const nextLevel = XP_LEVELS.find(l => l.threshold > currentLevel.threshold) || currentLevel;
-    const progress = (xp - currentLevel.threshold) / (nextLevel.threshold - currentLevel.threshold);
-    return { 
-        ...currentLevel, 
-        nextThreshold: nextLevel.threshold, 
-        progress: progress * 100 
-    };
- }
-
-function getDailyLog() {
-    const today = new Date().toDateString();
-    const logJson = localStorage.getItem(XP_DAILY_KEY);
-    const log = logJson ?
- JSON.parse(logJson) : {};
-    // 오늘 로그가 아니면 초기화
-    if (log.date !== today) {
-        return { date: today, meal: false, schedule: false, timetable: false };
- }
-    return log;
-}
-
-function updateDailyLog(key) {
-    const log = getDailyLog();
-    log[key] = true;
- localStorage.setItem(XP_DAILY_KEY, JSON.stringify(log));
-}
-
-
-function earnXP(amount, reason) {
-    if (!userName || !userGrade || !userClass) return;
-
-    const userKey = `${userGrade}-${userClass}-${userName}`;
- const xpData = getXPData();
-    
-    // XP 데이터 구조 초기화
-    if (!xpData[userKey]) {
-        xpData[userKey] = {
-            totalXP: 0,
-            grade: userGrade,
-            class: userClass,
-            name: userName
-        };
- }
-
-    xpData[userKey].totalXP += amount;
-    
-    // 로컬 저장소 업데이트
-    localStorage.setItem(RANKING_KEY_XP, JSON.stringify(xpData));
-    
-    updateUserInfoDisplay();
- if (amount > 0) {
-        console.log(`🎉 ${amount} XP 획득! (${reason})`); // alert 대신 console.log 사용
- }
-}
-
-// ----------------------------------------------------
-// ✨ 3. 사용자 설정 함수 (비밀번호 인증 로직 포함) ✨
-// ----------------------------------------------------
-
-function saveSettings(grade, classNum, name, verifiedAdmin = false) {
-    localStorage.setItem('user_grade', grade);
- localStorage.setItem('user_class', classNum);
-    localStorage.setItem('user_name', name);
-    
-    // 관리자 상태 저장
-    isAdmin = verifiedAdmin;
-    localStorage.setItem('is_admin', verifiedAdmin ? 'true' : 'false');
- userGrade = grade;
-    userClass = classNum;
-    userName = name;
-    
-    updateUserInfoDisplay();
- }
-
-function promptForSettings() {
-    const grade = prompt(`현재 학년: ${userGrade || '?'}\n새 학년을 숫자로 입력해 주세요 (예: 5)`);
- if (grade === null || isNaN(grade) || !grade.trim()) return; 
-    
-    const classNum = prompt(`현재 반: ${userClass || '?'}\n새 반을 숫자로 입력해 주세요 (예: 5)`);
- if (classNum === null || isNaN(classNum) || !classNum.trim()) return;
-
-    const name = prompt(`현재 이름: ${userName || '?'}\n이름을 입력해 주세요 (예: 김OO)`);
- if (name === null || !name.trim()) return;
-
-    const trimmedGrade = grade.trim();
-    const trimmedClass = classNum.trim();
-    const trimmedName = name.trim();
- let verifiedAdmin = false;
-
-    // 🚨 관리자 계정 체크 및 비밀번호 확인
-    if (trimmedGrade === ADMIN_GRADE && trimmedClass === ADMIN_CLASS && trimmedName === ADMIN_NAME) {
-        const password = prompt("김대원님, 관리자 계정으로 등록하려면 비밀번호를 입력하세요.");
- if (password === ADMIN_PASSWORD) {
-            alert("✅ 관리자 권한으로 등록되었습니다.");
- verifiedAdmin = true;
-        } else {
-            alert("❌ 비밀번호가 틀렸습니다. 일반 계정으로 등록합니다.");
- verifiedAdmin = false;
-        }
-    }
-    // 🚨
-
-    saveSettings(trimmedGrade, trimmedClass, trimmedName, verifiedAdmin);
- alert(`설정 완료! ${trimmedGrade}학년 ${trimmedClass}반 ${trimmedName}님으로 저장되었습니다.`);
-}
-
+// --- [UI 업데이트 로직] ---
 function updateUserInfoDisplay() {
-    const displayElement = document.getElementById('user-info-display');
-    const totalXP = getUserXP();
- const levelInfo = getLevelInfo(totalXP);
+    const el = document.getElementById('user-info-display');
+    const d = JSON.parse(localStorage.getItem('total_xp_ranking') || '{}');
+    const xp = (d[`${userGrade}-${userClass}-${userName}`] || {}).totalXP || 0;
     
-    if (userName && userGrade && userClass) {
-        let adminTag = isAdmin ?
- " [👑 관리자]" : "";
-        displayElement.innerHTML = `
-            ${userGrade}학년 ${userClass}반 ${userName}님${adminTag}<br>
-            <span style="font-size: 1.1rem; color: #00b0ff;">${levelInfo.title} (Lv.${levelInfo.level})</span>
-        `;
- // XP Bar 업데이트
-        const xpBar = document.getElementById('xp-bar');
-        const xpText = document.getElementById('xp-text');
- xpBar.style.width = `${levelInfo.progress}%`;
-        xpText.textContent = `XP: ${totalXP} / ${levelInfo.nextThreshold}`;
-
-    } else {
-        displayElement.textContent = "환영합니다! (설정 필요)";
- if (document.getElementById('xp-bar')) document.getElementById('xp-bar').style.width = '0%';
-        if (document.getElementById('xp-text')) document.getElementById('xp-text').textContent = 'XP: 0';
- }
-}
-
-// ----------------------------------------------------
-// ✨ 4. API 호출 함수 ✨
-// ----------------------------------------------------
-
-async function fetchMealDataFromAPI(dateObj) { 
-    // ... (NEIS API 호출 로직은 이전과 동일)
-    const YYYYMMDD = `${dateObj.getFullYear()}${String(dateObj.getMonth() + 1).padStart(2, '0')}${String(dateObj.getDate()).padStart(2, '0')}`;
- const apiUrl = `${NEIS_CONFIG.MEAL_URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
-                   `&ATPT_OFCDC_SC_CODE=${NEIS_CONFIG.ATPT_OFCDC_SC_CODE}` +
-                   `&SD_SCHUL_CODE=${NEIS_CONFIG.SD_SCHUL_CODE}&MLSV_YMD=${YYYYMMDD}`;
- try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
- if (data.mealServiceDietInfo) {
-            // XP 획득 로직
-            const log = getDailyLog();
- if (new Date().toDateString() === dateObj.toDateString() && !log.meal) {
-                earnXP(5, '오늘의 급식 메뉴 확인');
- updateDailyLog('meal');
-            }
-            // ... (메뉴 파싱 로직)
-            let menuString = data.mealServiceDietInfo[1].row[0].DDISH_NM;
- let menuArray = menuString
-                .split('<br/>')
-                .map(item => item.replace(/\([0-9\.]+\)/g, '').trim())
-                .filter(item => item.length > 0);
- return { success: true, menu: menuArray };
-        } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
-            return { error: `[공지] ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 급식 정보는 찾을 수 없어요.
- 🤔` };
-        } else {
-            return { error: `[에러] 급식 정보를 가져오는 중 문제가 발생했습니다.` };
- }
-    } catch (error) {
-        return { error: `[에러] 급식 API 통신 오류: 네트워크 연결을 확인하세요.` };
- }
-}
-
-async function fetchScheduleDataFromAPI(dateObj) { 
-    // XP 획득 로직 (월간 일정 확인)
-    const log = getDailyLog();
- if (new Date().getMonth() === dateObj.getMonth() && !log.schedule) {
-        earnXP(5, '이번 달 학사 일정 확인');
- updateDailyLog('schedule');
+    if(userName) {
+        let tag = role === 'admin' ? " [👑 관리자]" : (role === 'operator' ? " [⚙️ 운영자]" : "");
+        el.innerHTML = `${userGrade}-${userClass} ${userName}${tag}<br><div class="title-badge">${TITLE_DB[activeTitle] || '새싹'}</div>`;
+        document.getElementById('xp-bar').style.width = Math.min((xp/1000)*100, 100) + '%';
+        document.getElementById('xp-text').innerText = `XP: ${xp} / 1000`;
+        if(role === 'admin' || role === 'operator') document.getElementById('inquiry-btn').classList.remove('hidden');
     }
-    // ... (NEIS API 호출 로직은 이전과 동일)
-    const startMonth = String(dateObj.getMonth() + 1).padStart(2, '0');
- const lastDayOfMonth = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0).getDate();
-    const startDate = `${dateObj.getFullYear()}${startMonth}01`;
-    const endDate = `${dateObj.getFullYear()}${startMonth}${lastDayOfMonth}`;
- const apiUrl = `${NEIS_CONFIG.SCHEDULE_URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
-                   `&ATPT_OFCDC_SC_CODE=${NEIS_CONFIG.ATPT_OFCDC_SC_CODE}` +
-                   `&SD_SCHUL_CODE=${NEIS_CONFIG.SD_SCHUL_CODE}` +
-                   `&AA_FROM_YMD=${startDate}&AA_TO_YMD=${endDate}`;
- try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
- if (data.SchoolSchedule) {
-            return { 
-                success: true, 
-                schedule: data.SchoolSchedule[1].row.map(item => ({ 
-                    date: item.AA_YMD, 
-                    content: item.EVENT_NM
-   
-              }))
-            };
- } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
-            return { error: `[공지] ${dateObj.getMonth() + 1}월 학사 일정을 찾을 수 없어요.
- 😥` };
-        } else {
-            return { error: `[에러] 학사 일정 정보를 가져오는 중 문제가 발생했습니다.` };
- }
-    } catch (error) {
-        return { error: `[에러] 학사 일정 API 통신 오류: 네트워크 연결을 확인하세요.` };
- }
 }
 
+// --- [돌림판 로직] ---
+function spinRoulette() {
+    if(isSpinning) return;
+    let chances = parseInt(localStorage.getItem('chances') || '5');
+    if(localStorage.getItem('last_date') !== new Date().toDateString()) chances = 5;
+    if(chances <= 0) return alert("🎅 기회를 모두 썼어요. 내일 다시 오세요!");
 
-async function fetchTimeTableDataFromAPI(dateObj, grade, classNum) { 
-    // XP 획득 로직
-    const log = getDailyLog();
- if (new Date().toDateString() === dateObj.toDateString() && !log.timetable) {
-        earnXP(5, '오늘 시간표 확인');
-        updateDailyLog('timetable');
- }
+    isSpinning = true;
+    chances--;
+    localStorage.setItem('chances', chances);
+    localStorage.setItem('last_date', new Date().toDateString());
+    document.getElementById('chance-text').innerText = `남은 기회: ${chances}번`;
 
-    // ... (NEIS API 호출 로직은 이전과 동일)
-    const YYYYMMDD = `${dateObj.getFullYear()}${String(dateObj.getMonth() + 1).padStart(2, '0')}${String(dateObj.getDate()).padStart(2, '0')}`;
-    
-    const apiUrl = `${NEIS_CONFIG.TIME_TABLE_URL}?KEY=${NEIS_CONFIG.KEY}&Type=json&pIndex=1&pSize=100` +
-                   `&ATPT_OFCDC_SC_CODE=${NEIS_CONFIG.ATPT_OFCDC_SC_CODE}` +
-                   `&SD_SCHUL_CODE=${NEIS_CONFIG.SD_SCHUL_CODE}` +
-                   `&AY=${dateObj.getFullYear()}` + 
-                   `&TI_FROM_YMD=${YYYYMMDD}&TI_TO_YMD=${YYYYMMDD}` + 
-                   `&GRADE=${grade}&CLASS_NM=${classNum}`; 
-                   
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+    const rand = Math.random() * 100;
+    let angle = rand < 10 ? 18 : (rand < 40 ? 260 : 160);
+    currentRot += (360 * 5) + (360 - angle);
+    document.getElementById('roulette').style.transform = `rotate(${currentRot}deg)`;
 
-        if (data.elsTimetable) { 
-            return { 
-                success: true, 
-                schedule: data.elsTimetable[1].row.map(item => ({ 
-                    period: item.PERIO, 
-                    subject: item.ITRT_CNTNT
-                }))
-            };
-        } else if (data.RESULT && data.RESULT.CODE === 'INFO-200') {
-            return { error: `INFO-200` }; 
+    setTimeout(() => {
+        isSpinning = false;
+        if(rand < 10) {
+            const pick = ['santa', 'rudolph', 'gift'][Math.floor(Math.random()*3)];
+            if(!myTitles.includes(pick)) { myTitles.push(pick); localStorage.setItem('my_titles', JSON.stringify(myTitles)); alert(`🎊 한정 칭호 [${TITLE_DB[pick]}] 획득!`); }
+            else { alert("100 XP 획득!"); earnXP(100); }
         } else {
-            return { error: `[에러] 시간표 정보를 가져오는 중 문제가 발생했습니다. (NEIS 키 오류)` };
+            let winXP = rand < 40 ? 50 : 10;
+            alert(`✨ ${winXP} XP를 획득했습니다!`);
+            earnXP(winXP);
         }
-    } catch (error) {
-        return { error: `[에러] 시간표 API 통신 오류: 네트워크/CORS 문제일 수 있습니다.` }; 
-    }
-}
-
-// ----------------------------------------------------
-// ✨ 5. 데이터 표시 함수 (테이블 생성 로직) ✨
-// ----------------------------------------------------
-
-function displayMealAsTable(menuArray) {
-    const tableBody = document.querySelector('#menu_table');
-    tableBody.innerHTML = '';
-    const headerRow = tableBody.insertRow();
-    headerRow.innerHTML = '<th>No.</th><th>메뉴</th>';
-    menuArray.forEach((item, index) => {
-        const row = tableBody.insertRow();
-        const cellNo = row.insertCell();
-        const cellMenu = row.insertCell();
-        cellNo.textContent = index + 1;
-        cellMenu.textContent = item;
-    });
-    document.querySelector('#menu_table_area h3').textContent = "오늘의 급식 메뉴";
-}
-
-function displayScheduleAsList(scheduleArray, year, month) {
-    const tableBody = document.querySelector('#menu_table');
-    tableBody.innerHTML = '';
-    document.querySelector('#menu_table_area h3').textContent = `${year}년 ${month}월 학사 일정`;
-    const headerRow = tableBody.insertRow();
-    headerRow.innerHTML = '<th>날짜</th><th>일정 내용</th>';
-    scheduleArray.sort((a, b) => a.date.localeCompare(b.date));
-    scheduleArray.forEach(item => {
-        const row = tableBody.insertRow();
-        const cellDate = row.insertCell();
-        const cellContent = row.insertCell();
-        const formattedDate = `${item.date.substring(4, 6)}/${item.date.substring(6, 8)}`;
-        cellDate.textContent = formattedDate;
-        cellDate.style.width = '30%';
-        cellDate.style.color = 'var(--color-rose)';
-        cellDate.style.fontWeight = 'bold';
-        cellContent.textContent = item.content;
-    });
-}
-
-function displayTimeTable(timeTableArray, grade, classNum) {
-    const tableBody = document.querySelector('#menu_table');
-    tableBody.innerHTML = '';
-    document.querySelector('#menu_table_area h3').textContent = `${grade}학년 ${classNum}반 오늘 시간표`;
-    const headerRow = tableBody.insertRow(0);
-    headerRow.innerHTML = '<th>교시</th><th>과목</th>';
-    timeTableArray.forEach(item => {
-        const row = tableBody.insertRow();
-        const cellPeriod = row.insertCell();
-        const cellSubject = row.insertCell();
-        cellPeriod.innerHTML = `<span style="font-size:1.1rem; color: var(--color-rose); font-weight:bold;">${item.period}교시</span>`;
-        cellSubject.textContent = item.subject;
-        cellSubject.style.textAlign = 'center';
-    });
-}
-
-function displayTodayDate() {
-    const today = currentDisplayDate;
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const date = today.getDate();
-    const day = ['일', '월', '화', '수', '목', '금', '토'][today.getDay()];
-    const todayActual = new Date();
-    const isToday = todayActual.toDateString() === today.toDateString();
-    let datePrefix = "오늘의";
-    let formattedDate = '';
-    
-    if (currentScreenMode === 'meal' || currentScreenMode === 'timetable') {
-        datePrefix = isToday ? "오늘의" : `${month}월 ${date}일의`;
-        let subjectText = currentScreenMode === 'timetable' ? `${userGrade || '?'}학년 ${userClass || '?'}반의 ` : '';
-        formattedDate = `${datePrefix} ${subjectText}`;
-    } else if (currentScreenMode === 'schedule') {
-        formattedDate = `${month}월의 학사일정`;
-    }
-    
-    document.getElementById('today-date-display').textContent = `${formattedDate} (${day}요일)`;
-}
-
-// ----------------------------------------------------
-// ✨ 6. 랭킹 관리 함수 (최고 기록만 저장하도록 수정됨) ✨
-// ----------------------------------------------------
-
-// 미니게임 점수 가져오기 (각 유저의 최고 기록 맵을 반환)
-function getMinigameScores() {
-    const scoresJson = localStorage.getItem(RANKING_KEY_MINIGAME);
-    try {
-        // 배열 대신 유저 키-최고 점수 객체 (map) 구조를 사용
-        return scoresJson ? JSON.parse(scoresJson) : {}; 
-    } catch (e) {
-        console.error("Error parsing minigame scores from localStorage:", e);
-        return {};
-    }
-}
-
-// 미니게임 점수 저장 (XP 누적 포함)
-function saveScore(score) {
-    if (!userName || !userGrade || !userClass) {
-        alert("⚠️ 점수를 저장하려면 먼저 '학년/반/이름 설정'을 완료해야 합니다.");
-        return;
-    }
-    
-    if (score <= 0) { // 0점 이하 기록은 랭킹에 등록하지 않음
-        earnXP(score, `미니게임 ${score}점 달성`);
-        alert("😭 아쉽지만, 0점은 랭킹에 등록되지 않아요.");
-        return;
-    }
-
-    const userKey = `${userGrade}-${userClass}-${userName}`;
-    const bestScoresMap = getMinigameScores();
-    const existingEntry = bestScoresMap[userKey];
-    let isNewBestScore = false;
-
-    // 1. 미니게임 랭킹 저장: 새로운 점수가 현재 저장된 최고 점수보다 높거나, 기록이 없을 경우에만 업데이트
-    if (!existingEntry || score > existingEntry.score) {
-        bestScoresMap[userKey] = {
-            score: score,
-            grade: userGrade,
-            class: userClass,
-            name: userName,
-            timestamp: Date.now() 
-        };
-        isNewBestScore = true;
-        // 로컬 저장소 업데이트
-        localStorage.setItem(RANKING_KEY_MINIGAME, JSON.stringify(bestScoresMap));
-    }
-    
-    // 2. XP 누적 (게임을 플레이했으므로 XP는 제공)
-    earnXP(score, `미니게임 ${score}점 달성`);
-    
-    // 3. 알림 표시
-    if (isNewBestScore) {
-        alert(`🎉 최고 점수 기록 갱신! ${score}점을 랭킹에 등록했습니다.`);
-    } else {
-        alert(`🤔 ${score}점 기록! (현재 최고 기록: ${existingEntry.score}점. 갱신 실패!)`);
-    }
-}
-
-// 🚨 랭킹 초기화 함수 (관리자 전용 버튼에 연결)
-function clearRankingAndReload() {
-    if (!isAdmin) {
-        alert("이 기능은 관리자만 사용할 수 있습니다.");
-        return;
-    }
-    if (confirm("🚨 경고: 정말로 미니게임 랭킹, 누적 XP 랭킹, 일일 XP 로그를 모두 초기화하시겠습니까? (XP 누적 데이터도 모두 삭제됩니다)")) {
-        localStorage.removeItem(RANKING_KEY_MINIGAME);
-        localStorage.removeItem(RANKING_KEY_XP);
-        localStorage.removeItem(XP_DAILY_KEY);
-        alert("랭킹 및 XP 기록이 모두 삭제되었습니다.");
-        // XP 시스템 초기화 후 화면 새로고침
         updateUserInfoDisplay();
-        StateManager.showRanking('minigame');
-    }
+    }, 4000);
 }
 
-// ----------------------------------------------------
-// ✨ 7. 미니 게임 로직 ✨
-// ----------------------------------------------------
-const gameThiefElement = document.getElementById('thief');
-const gameAreaElement = document.getElementById('game-area');
-const gameStatusElement = document.getElementById('game-status');
-const gameScoreElement = document.getElementById('game-score');
-const gameStartBtnElement = document.getElementById('start-game-btn');
-const game = {
-    score: 0,
-    timer: 0,
-    gameInterval: null,
-    moveInterval: null,
-    timeLimit: 15,
-    thiefElement: gameThiefElement,
-    gameAreaElement: gameAreaElement,
-    statusElement: gameStatusElement,
-    scoreElement: gameScoreElement,
-    startBtnElement: gameStartBtnElement,
-    hitHandler: null,
+// --- [미니게임 로직] ---
+let score = 0;
+function startThiefGame() {
+    score = 0; document.getElementById('game-score').innerText = "점수: 0점";
+    const thief = document.getElementById('thief');
+    thief.style.display = 'block';
+    let timer = setInterval(() => {
+        thief.style.top = Math.random() * 100 + 'px';
+        thief.style.left = Math.random() * 80 + '%';
+    }, 800);
+    thief.onclick = () => { score++; document.getElementById('game-score').innerText = `점수: ${score}점`; };
+    setTimeout(() => { clearInterval(timer); thief.style.display = 'none'; alert(`게임 종료! 최종 점수: ${score}`); earnXP(score); }, 10000);
+}
 
-    start: function() {
-        if (this.gameInterval) this.stop();
-        if (this.moveInterval) clearInterval(this.moveInterval);
-        this.score = 0;
-        this.timer = this.timeLimit;
-        if (this.scoreElement) this.scoreElement.textContent = `점수: 0점`;
-        if (this.startBtnElement) this.startBtnElement.classList.add('hidden');
-        if (this.thiefElement) {
-            this.thiefElement.style.opacity = 0;
-            this.thiefElement.style.pointerEvents = 'none';
-        }
-        if (this.statusElement) this.statusElement.textContent = `게임 시작! ${this.timer}초 남았습니다!`;
-        
-        this.hitHandler = this.hit.bind(this);
-        if (this.thiefElement) {
-            this.thiefElement.removeEventListener('click', this.hitHandler);
-            this.thiefElement.addEventListener('click', this.hitHandler);
-        }
+// --- [칭호 리스트] ---
+function showTitleList() {
+    StateManager.showScreen('title-screen');
+    const cont = document.getElementById('title-container');
+    cont.innerHTML = "";
+    myTitles.forEach(t => {
+        const b = document.createElement('button');
+        b.innerText = TITLE_DB[t];
+        b.style = "margin: 5px 0; font-size: 0.9rem;";
+        b.onclick = () => { activeTitle = t; localStorage.setItem('active_title', t); alert('장착 완료!'); StateManager.showScreen('portal'); };
+        cont.appendChild(b);
+    });
+}
 
-        setTimeout(() => {
-            this.gameInterval = setInterval(this.update.bind(this), 1000);
-            this.moveInterval = setInterval(this.moveThief.bind(this), 800);
-            if (this.thiefElement) {
-                this.thiefElement.style.opacity = 1;
-                this.thiefElement.style.pointerEvents = 'auto';
-            }
-        }, 1000); // 1초 후 게임 시작
-    },
+// --- [공통 로직] ---
+function earnXP(amt) {
+    const k = `${userGrade}-${userClass}-${userName}`;
+    const d = JSON.parse(localStorage.getItem('total_xp_ranking') || '{}');
+    if(!d[k]) d[k] = { totalXP: 0, name: userName };
+    d[k].totalXP += amt;
+    localStorage.setItem('total_xp_ranking', JSON.stringify(d));
+}
 
-    stop: function() {
-        if (this.gameInterval) clearInterval(this.gameInterval);
-        if (this.moveInterval) clearInterval(this.moveInterval);
-        this.gameInterval = null;
-        this.moveInterval = null;
-        if (this.statusElement) this.statusElement.textContent = `게임 종료! 최종 점수: ${this.score}점`;
-        if (this.thiefElement) {
-            this.thiefElement.style.opacity = 0;
-            this.thiefElement.style.pointerEvents = 'none';
-        }
-        if (this.startBtnElement) this.startBtnElement.classList.remove('hidden');
-
-        // 점수 저장 로직 (XP 누적 포함)
-        saveScore(this.score);
-    },
-
-    update: function() {
-        if (this.timer <= 0) {
-            this.stop();
-            return;
-        }
-        this.timer--;
-        if (this.statusElement) this.statusElement.textContent = `${this.timer}초 남았습니다!`;
-    },
-
-    moveThief: function() {
-        if (!this.gameAreaElement || !this.thiefElement) return;
-        const areaWidth = this.gameAreaElement.clientWidth;
-        const areaHeight = this.gameAreaElement.clientHeight;
-        const thiefSize = 50;
-        const randomX = Math.random() * (areaWidth - thiefSize);
-        const randomY = Math.random() * (areaHeight - thiefSize);
-        this.thiefElement.style.left = `${randomX}px`;
-        this.thiefElement.style.top = `${randomY}px`;
-    },
-
-    hit: function() {
-        this.score++;
-        if (this.scoreElement) this.scoreElement.textContent = `점수: ${this.score}점`;
-        this.moveThief();
-        if (this.thiefElement) {
-            this.thiefElement.style.transform = 'translate(-50%, -50%) scale(1.2)';
-            setTimeout(() => {
-                this.thiefElement.style.transform = 'translate(-50%, -50%) scale(1)';
-            }, 100);
-        }
-    }
-};
-
-// ----------------------------------------------------
-// ✨ 8. UI 및 상태 관리 (랭킹 테이블 표시 로직 수정됨) ✨
-// ----------------------------------------------------
-const UI = {
-    screens: {
-        question: document.getElementById("question"),
-        portal: document.getElementById("portal"),
-        message_area: document.getElementById("message_area"),
-        "minigame-screen": document.getElementById("minigame-screen"),
-        "ranking-screen": document.getElementById("ranking-screen"),
-    },
-    elements: {
-        // ... (이전 요소들)
-        body: document.body,
-        message_text: document.getElementById("message_text"),
-        back_btn: document.getElementById("back_btn"),
-        yes_btn: document.getElementById("yes_btn"),
-        no_btn: document.getElementById("no_btn"),
-        lunch_menu_btn: document.getElementById("lunch-menu"),
-        schedule_btn: document.getElementById("schedule-btn"),
-        timetable_btn: document.getElementById("timetable-btn"),
-        minigame_btn: document.getElementById("minigame-btn"),
-        settings_btn: document.getElementById("settings-btn"),
-        menu_table_area: document.getElementById("menu_table_area"),
-        day_nav_buttons: document.getElementById("dayNavButtons"),
-        month_nav_buttons: document.getElementById("monthNavButtons"),
-        prev_btn: document.getElementById("prev_day"),
-        next_btn: document.getElementById("next_day"),
-        prev_month_btn: document.getElementById("prev_month"),
-        next_month_btn: document.getElementById("next_month"),
-        no_waste_msg: document.getElementById("no-waste-message"),
-        ranking_table_body: document.querySelector('#ranking-table tbody'),
-        clear_ranking_btn: document.getElementById('clear-ranking-btn'),
-        ranking_title_text: document.getElementById('ranking-title-text'),
-        minigame_ranking_btn: document.getElementById('minigame-ranking-btn'),
-        xp_ranking_btn: document.getElementById('xp-ranking-btn'),
-    }
-};
+async function sendInquiry() {
+    const content = document.getElementById('inquiry-content').value;
+    if(!content) return;
+    alert("운영자(김대원)님께 전송되었습니다! ✅");
+    StateManager.showScreen('portal');
+}
 
 const StateManager = {
-    resetNavButtons: function() {
-        if (UI.elements.day_nav_buttons) UI.elements.day_nav_buttons.classList.add("hidden");
-        if (UI.elements.month_nav_buttons) UI.elements.month_nav_buttons.classList.add("hidden");
-        if (UI.elements.no_waste_msg) UI.elements.no_waste_msg.classList.add("hidden");
-        if (UI.elements.menu_table_area) UI.elements.menu_table_area.classList.add("hidden");
-        if (UI.elements.message_text) UI.elements.message_text.classList.add("hidden");
+    showScreen: function(id) { 
+        document.querySelectorAll('.card').forEach(c => c.classList.add('hidden')); 
+        document.getElementById(id).classList.remove('hidden'); 
+        updateUserInfoDisplay();
     },
-
-    showScreen: function(screenId, stateClass = '') {
-        // 모든 화면 숨기기
-        Object.values(UI.screens).forEach(screen => {
-            if (screen) {
-                screen.classList.add("hidden");
-                // 이전 stateClass 제거 (회전 효과 재적용 방지)
-                screen.classList.remove('deny-state', 'access-state'); 
-            }
-        });
-        
-        // 요청된 화면 표시
-        const targetScreen = UI.screens[screenId];
-        if (targetScreen) {
-            targetScreen.classList.remove("hidden");
-            targetScreen.classList.add(stateClass);
-        }
-        
-        // 포털 화면 진입 시 날짜 및 XP 표시 업데이트
-        if (screenId === 'portal') {
-            displayTodayDate();
-            updateUserInfoDisplay(); 
-        }
-
-        // 미니게임 화면 전환 시 게임 정지
-        if (screenId !== 'minigame-screen' && game.gameInterval) {
-            game.stop();
-        }
-
-        // 미니게임 도둑 숨기기
-        if (screenId !== 'minigame-screen') {
-            if (game.thiefElement) game.thiefElement.style.opacity = 0;
-        }
-    },
-
-    // 랭킹 화면 표시 및 데이터 로딩 함수 (type에 따라 분기)
-    showRanking: function(type = 'minigame') {
-        this.showScreen("ranking-screen", 'access-state');
-        // 버튼 활성화 상태 업데이트
-        UI.elements.minigame_ranking_btn.classList.remove('active');
-        UI.elements.xp_ranking_btn.classList.remove('active');
-        if (type === 'xp') {
-            UI.elements.xp_ranking_btn.classList.add('active');
-            this.displayRankingTable(type);
-        } else {
-            UI.elements.minigame_ranking_btn.classList.add('active');
-            this.displayRankingTable('minigame');
-        }
-
-        // 🚨 관리자 버튼 표시/숨김 로직
-        const clearBtn = UI.elements.clear_ranking_btn;
-        if (clearBtn) {
-            if (isAdmin) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
-        }
-    },
-
-    displayRankingTable: function(type) {
-        const tableBody = UI.elements.ranking_table_body;
-        if (!tableBody) return;
-        tableBody.innerHTML = '';
-        
-        let dataArray = [];
-        let scoreLabel = '';
-        let titleText = '';
-        let emptyMessage = '';
-
-        if (type === 'xp') {
-            const xpData = getXPData();
-            dataArray = Object.values(xpData).sort((a, b) => b.totalXP - a.totalXP);
-            scoreLabel = 'XP';
-            titleText = '🏆 누적 XP 랭킹';
-            emptyMessage = "아직 XP 기록이 없습니다. 급식/시간표를 확인하거나 미니게임에 도전하세요! 💪";
-        } else { // minigame
-            // --- 수정된 부분: 맵을 배열로 변환하고 점수 기준으로 정렬 ---
-            const bestScoresMap = getMinigameScores(); // 유저별 최고 기록 맵 가져오기
-            dataArray = Object.values(bestScoresMap); // 맵의 값(기록)들을 배열로 변환
-            
-            // 점수(score) 기준으로 내림차순 정렬
-            dataArray.sort((a, b) => b.score - a.score); 
-
-            scoreLabel = '점수';
-            titleText = '🕹️ 미니게임 최고 기록';
-            emptyMessage = "아직 미니게임 최고 기록이 없습니다. 게임을 플레이하고 랭킹을 등록하세요! 🕹️";
-            // ----------------------------------------------------
-        }
-
-        UI.elements.ranking_title_text.textContent = titleText;
-
-        if (dataArray.length === 0) {
-            const row = tableBody.insertRow();
-            const cell = row.insertCell();
-            cell.colSpan = 4;
-            cell.textContent = emptyMessage;
-            cell.style.padding = '20px';
-            return;
-        }
-
-        // 테이블 생성
-        dataArray.forEach((item, index) => {
-            const row = tableBody.insertRow();
-            const rank = index + 1;
-            const rankCell = row.insertCell();
-            const classCell = row.insertCell();
-            const nameCell = row.insertCell();
-            const scoreCell = row.insertCell();
-
-            rankCell.textContent = rank;
-            classCell.textContent = `${item.grade}학년 ${item.class}반`;
-            nameCell.textContent = item.name;
-            scoreCell.textContent = item.score || item.totalXP;
-            scoreCell.style.fontWeight = 'bold';
-            scoreCell.style.color = 'var(--color-rose)';
-
-            // 헤더 업데이트 (Score/XP 레이블)
-            const scoreHeader = document.querySelector('#ranking-table thead tr th:last-child');
-            if (scoreHeader) scoreHeader.textContent = scoreLabel;
-        });
-    },
-
-    showMealMenu: async function(prevId) {
-        this.resetNavButtons();
-        currentScreenMode = 'meal';
-        currentDisplayDate = new Date(); // 오늘 날짜로 초기화
-        this.showScreen("message_area", 'access-state');
-        UI.elements.day_nav_buttons.classList.remove("hidden");
-        UI.elements.menu_table_area.classList.remove("hidden");
-        
-        await this.loadDataAndDisplay(prevId);
-    },
-
-    showSchedule: async function(prevId = 'portal') {
-        this.resetNavButtons();
-        currentScreenMode = 'schedule';
-        currentDisplayDate = new Date(); // 현재 월로 초기화
-        this.showScreen("message_area", 'access-state');
-        UI.elements.month_nav_buttons.classList.remove("hidden");
-        UI.elements.menu_table_area.classList.remove("hidden");
-        
-        await this.loadDataAndDisplay(prevId);
-    },
-    
-    showTimeTable: async function(prevId = 'portal') {
-        this.resetNavButtons();
-        currentScreenMode = 'timetable';
-        currentDisplayDate = new Date(); // 오늘 날짜로 초기화
-        
-        if (!userName || !userGrade || !userClass) {
-            this.showScreen("message_area", 'access-state');
-            UI.elements.message_text.classList.remove("hidden");
-            UI.elements.message_text.textContent = "⚠️ 시간표를 보려면 '학년/반/이름 설정'을 먼저 완료해 주세요!";
-            UI.elements.menu_table_area.classList.add("hidden");
-            UI.elements.back_btn.onclick = () => this.showScreen('portal', 'access-state');
-            return;
-        }
-        
-        this.showScreen("message_area", 'access-state');
-        UI.elements.day_nav_buttons.classList.remove("hidden");
-        UI.elements.menu_table_area.classList.remove("hidden");
-        
-        await this.loadDataAndDisplay(prevId);
-    },
-
-    showMinigame: function() {
-        this.showScreen("minigame-screen", 'access-state');
-    },
-
-    changeDateAndReload: async function(delta, type) {
-        const prevId = 'portal'; // 데이터 로드 실패 시 돌아갈 화면
-        
-        if (type === 'day') {
-            currentDisplayDate.setDate(currentDisplayDate.getDate() + delta);
-            if (currentScreenMode === 'meal') {
-                await this.loadDataAndDisplay(prevId);
-            } else if (currentScreenMode === 'timetable') {
-                await this.loadDataAndDisplay(prevId);
-            }
-        } else if (type === 'month') {
-            currentDisplayDate.setMonth(currentDisplayDate.getMonth() + delta);
-            if (currentScreenMode === 'schedule') {
-                await this.loadDataAndDisplay(prevId);
-            }
-        }
-    },
-
-    loadDataAndDisplay: async function(prevId) {
-        displayTodayDate();
-        UI.elements.menu_table_area.classList.remove("hidden");
-        UI.elements.message_text.classList.add("hidden");
-        document.querySelector('#menu_table').innerHTML = '<tr><td colspan="2">데이터를 불러오는 중... ⏳</td></tr>';
-
-        let result;
-        if (currentScreenMode === 'meal') {
-            result = await fetchMealDataFromAPI(currentDisplayDate);
-        } else if (currentScreenMode === 'schedule') {
-            result = await fetchScheduleDataFromAPI(currentDisplayDate);
-        } else if (currentScreenMode === 'timetable') {
-            result = await fetchTimeTableDataFromAPI(currentDisplayDate, userGrade, userClass);
-            if (result.error === 'INFO-200') {
-                result.error = `[공지] ${userGrade}학년 ${userClass}반의 시간표 정보를 찾을 수 없어요. 😥 (주말 또는 방학일 수 있습니다)`;
-            }
-        }
-        
-        // 잔반 없는 날 메시지 표시 로직 (일요일, 수요일이 잔반 없는 날이라고 가정)
-        const dayOfWeek = currentDisplayDate.getDay();
-        const noWasteMsg = UI.elements.no_waste_msg;
-        if (currentScreenMode === 'meal' && (dayOfWeek === 0 || dayOfWeek === 3)) { // 0:일, 3:수
-            noWasteMsg.classList.remove("hidden");
-        } else if (noWasteMsg) {
-            noWasteMsg.classList.add("hidden");
-        }
-
-        if (result.success) {
-            if (currentScreenMode === 'meal') {
-                displayMealAsTable(result.menu);
-            } else if (currentScreenMode === 'schedule') {
-                displayScheduleAsList(result.schedule, currentDisplayDate.getFullYear(), currentDisplayDate.getMonth() + 1);
-            } else if (currentScreenMode === 'timetable') {
-                displayTimeTable(result.schedule, userGrade, userClass);
-            }
-        } else {
-            UI.elements.message_text.classList.remove("hidden");
-            UI.elements.message_text.textContent = result.error;
-            UI.elements.menu_table_area.classList.add("hidden");
-        }
-
-        // 돌아가기 버튼 설정
-        UI.elements.back_btn.onclick = () => this.showScreen(prevId, 'access-state');
-    },
-    
-    // '아닙니다' 버튼 클릭 시 로직
-    showDenyMessage: function() {
-        this.showScreen("message_area", "deny-state");
-        UI.elements.menu_table_area.classList.add("hidden");
-        UI.elements.message_text.classList.remove("hidden");
-        UI.elements.message_text.textContent = "아직 해누리 친구가 아니군요! 다음에 꼭 만나요! 👋";
-        
-        // 돌아가기 버튼 설정 (질문 화면으로 복귀)
-        UI.elements.back_btn.onclick = () => this.showScreen("question", "deny-state");
-    },
-    
-    initEventListeners: function() {
-        // 1. 네/아니오 버튼
-        UI.elements.yes_btn.addEventListener("click", () => {
-            this.showScreen("portal", "access-state");
-        });
-        UI.elements.no_btn.addEventListener("click", () => {
-            this.showDenyMessage();
-        });
-        
-        // 2. 메인 버튼
-        if (UI.elements.lunch_menu_btn) UI.elements.lunch_menu_btn.addEventListener("click", () => {
-            this.showMealMenu("portal", "access-state");
-        });
-        if (UI.elements.schedule_btn) UI.elements.schedule_btn.addEventListener("click", () => {
-            this.showSchedule();
-        });
-        if (UI.elements.timetable_btn) UI.elements.timetable_btn.addEventListener("click", () => {
-            this.showTimeTable();
-        });
-        if (UI.elements.minigame_btn) UI.elements.minigame_btn.addEventListener("click", () => {
-            this.showMinigame();
-        });
-        
-        if (UI.elements.settings_btn) UI.elements.settings_btn.addEventListener("click", () => {
-            promptForSettings();
-        });
-
-        // 3. 날짜 이동 버튼
-        if (UI.elements.prev_btn) UI.elements.prev_btn.addEventListener("click", () => {
-            this.changeDateAndReload(-1, 'day'); 
-        });
-        if (UI.elements.next_btn) UI.elements.next_btn.addEventListener("click", () => {
-            this.changeDateAndReload(1, 'day'); 
-        });
-
-        if (UI.elements.prev_month_btn) UI.elements.prev_month_btn.addEventListener("click", () => {
-            this.changeDateAndReload(-1, 'month'); 
-        });
-        if (UI.elements.next_month_btn) UI.elements.next_month_btn.addEventListener("click", () => {
-            this.changeDateAndReload(1, 'month');
-        });
-    },
-
-    // 초기 로딩 시 화면 상태 결정
-    initialLoad: function() {
-        this.initEventListeners();
-        updateUserInfoDisplay(); // XP 상태 초기 로딩
-        
-        // 로컬 저장소에 사용자 정보가 있으면 바로 포털로, 없으면 질문 화면으로
-        if (localStorage.getItem('user_grade') && localStorage.getItem('user_name')) {
-            this.showScreen('portal', 'access-state');
-        } else {
-            // 이전에 hidden을 제거했으므로, 여기서 다시 설정하지 않습니다.
-            // this.showScreen('question'); 
-        }
+    loadData: async function(mode) {
+        this.showScreen('message_area');
+        const table = document.getElementById('menu_table');
+        table.innerHTML = "<tr><td>로딩 중...</td></tr>";
+        let ymd = new Date().toISOString().split('T')[0].replace(/-/g, '');
+        let url = mode === 'meal' ? `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${NEIS_CONF.KEY}&Type=json&ATPT_OFCDC_SC_CODE=${NEIS_CONF.ATPT}&SD_SCHUL_CODE=${NEIS_CONF.SD}&MLSV_YMD=${ymd}` 
+                : `https://open.neis.go.kr/hub/elsTimetable?KEY=${NEIS_CONF.KEY}&Type=json&ATPT_OFCDC_SC_CODE=${NEIS_CONF.ATPT}&SD_SCHUL_CODE=${NEIS_CONF.SD}&GRADE=${userGrade}&CLASS_NM=${userClass}&ALL_TI_YMD=${ymd}`;
+        try {
+            const r = await fetch(url); const d = await r.json(); table.innerHTML = "";
+            if(mode === 'meal' && d.mealServiceDietInfo) {
+                d.mealServiceDietInfo[1].row[0].DDISH_NM.split('<br/>').forEach(m => { table.insertRow().insertCell().innerText = m.replace(/\([0-9\.]+\)/g, ''); });
+            } else if(mode === 'timetable' && d.elsTimetable) {
+                d.elsTimetable[1].row.forEach(s => { let tr = table.insertRow(); tr.insertCell().innerText = s.PERIO + "교시"; tr.insertCell().innerText = s.ITRT_CNTNT; });
+            } else { table.innerHTML = "<tr><td>오늘 정보가 없습니다.</td></tr>"; }
+        } catch(e) { table.innerHTML = "<tr><td>연결 오류 발생</td></tr>"; }
     }
 };
 
-// ----------------------------------------------------
-// ✨ 9. 초기화 실행 ✨
-// ----------------------------------------------------
+function promptForSettings() {
+    const g = prompt("학년", "5"); const c = prompt("반", "5"); const n = prompt("번호", "1"); const nm = prompt("이름", "이름");
+    if(!g || !c || !n || !nm) return;
+    let r = 'user';
+    if(nm === ADMIN_CONF.name && prompt("관리자 비번") === ADMIN_CONF.pw) r = 'admin';
+    else if(nm === OPERATOR_CONF.name && prompt("운영자 비번") === OPERATOR_CONF.pw) r = 'operator';
+    localStorage.setItem('user_grade', g); localStorage.setItem('user_class', c);
+    localStorage.setItem('user_name', nm); localStorage.setItem('user_role', r);
+    location.reload();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    StateManager.initialLoad();
+    document.getElementById('yes_btn').onclick = () => { if(!userName) promptForSettings(); else StateManager.showScreen('portal'); };
+    if(userName) StateManager.showScreen('portal');
 });
-
 </script>
 </body>
 </html>
